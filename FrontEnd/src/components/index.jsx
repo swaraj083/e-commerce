@@ -1,6 +1,6 @@
 export { default as AddFeatured } from "./AddFeatured";
 export { default as AddProduct } from "./AddProduct";
-export { default as AdminDashBoard } from "./AdminDashBoard";
+export { default as DashBoard } from "./DashBoard";
 export {default as Alert} from "./Alert";
 export { default as Categories } from "./Categories";
 export { default as DisplayProducts } from "./DisplayProducts";
@@ -13,3 +13,4 @@ export { default as OfferBanner } from "./OfferBanner";
 export { default as ProductSlider } from "./ProductSlider";
 export { default as StatCard } from "./StatCard";
 export { default as SignUp } from "./SignUp";
+export {default as ViewOrUpdateFeatured} from "./ViewOrUpdateFeatured"

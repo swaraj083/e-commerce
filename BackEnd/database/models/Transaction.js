@@ -12,6 +12,10 @@ const TransactionSchema = new mongoose.Schema(
           type: String,
           required: true,
         },
+        size:{
+          type:String,
+          required:true
+        },
         quantity: {
           type: Number,
           required: true,
@@ -20,15 +24,15 @@ const TransactionSchema = new mongoose.Schema(
     ],
     paymentID:{
       type:String,
-      required:true
+      default:""
     },
     orderID:{
       type:String,
-      required:true
+      default:""
     },
     signature:{
       type:String,
-      required:true
+      default:""
     },
     transactionDate: {
       type: Date,

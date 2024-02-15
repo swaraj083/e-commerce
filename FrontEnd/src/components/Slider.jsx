@@ -52,7 +52,7 @@ function Slider({sliderProducts}) {
           </button>
           <div className="overflow-hidden w-[924px;] max-sm:overflow-x-scroll max-sm:w-full">
             <div
-              className="flex flex-row nowrap gap-2 transition duration-150 ease-in-out"
+              className="flex flex-row nowrap gap-2 transition duration-1000 ease-in-out"
               style={{
                 transform: `translateX(${(curLastIndex - 3) * -308}px)`,
               }}

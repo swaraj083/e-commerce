@@ -69,7 +69,7 @@ function NavBar() {
           </Link>
 
         }
-        {
+        {/* {
           isLoggedIn && userInfo.isAdmin && <Link
             to="/admin/add-product"
             className="text-slate-gray m-0 text-md font-montserrat font-medium hover:pointer hover:text-coral-red textShadow montserrat"
@@ -86,7 +86,7 @@ function NavBar() {
             Add Featured
           </Link>
 
-        }
+        } */}
       </div>
       {
         !isLoggedIn && <div className="flex flex-row gap-3 m-0 max-sm:hidden">
@@ -98,7 +98,7 @@ function NavBar() {
           </Link>
           <Link
             to="/login"
-            className="px-3 py-1 m-0 font-montserrat font-medium text-slate-gray hover:pointer hover:text-coral-red textShadow montserrat"
+            className="px-3 py-1 m-0 font-montserrat font-medium text-white bg-coral-red rounded-xl hover:pointer hover:text-slate-gray textShadow montserrat"
           >
             Login
           </Link>
@@ -106,6 +106,12 @@ function NavBar() {
       }
       {
         isLoggedIn && <div className="flex flex-row gap-3 m-0 max-sm:hidden">
+          <Link
+          to={`/profile/${userInfo.id}`}
+          className="text-slate-gray m-0 text-md font-montserrat font-medium hover:pointer hover:text-coral-red textShadow montserrat"
+        >
+          My Profile
+        </Link>
           <Link to="/cart" className="flex flex-row justify-center items-center gap-2">
             <svg xmlns="http://www.w3.org/2000/svg" height="16" width="18" viewBox="0 0 576 512"><path d="M0 24C0 10.7 10.7 0 24 0H69.5c22 0 41.5 12.8 50.6 32h411c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3H170.7l5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5H488c13.3 0 24 10.7 24 24s-10.7 24-24 24H199.7c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5H24C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z" /></svg>
             <p className="text-slate-gray m-0 text-md font-montserrat font-medium hover:pointer hover:text-coral-red textShadow montserrat">{value}</p>
@@ -114,7 +120,7 @@ function NavBar() {
             dispatch(resetCart());
             dispatch(logOutUser());
           }}
-            className="px-3 py-1 m-0 font-montserrat font-medium text-slate-gray hover:pointer hover:text-coral-red textShadow montserrat"
+            className="px-3 py-1 m-0 font-montserrat font-medium text-white bg-coral-red rounded-xl hover:pointer hover:text-slate-gray textShadow montserrat"
           >
             Log out
           </p>

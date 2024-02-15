@@ -5,12 +5,15 @@ import { DisplayProducts } from "../components";
 import { fetchProductsByCategory } from "../redux/features/product/productSlice";
 
 function Category({ categoryName }) {
+  // State Variables
   const [isActive, setIsActive] = useState("");
-  const { allProducts, loading } = useSelector((state) => state.product);
   const [currentProducts, setCurrentProducts] = useState([]);
+  
+  // Redux
+  const { allProducts, loading } = useSelector((state) => state.product);
   const dispatch = useDispatch();
   
-  
+  // useEffects
   useEffect(() => {
     dispatch(gettokens());
     dispatch(fetchProductsByCategory(categoryName));
@@ -30,6 +33,7 @@ function Category({ categoryName }) {
     }
   }, [allProducts])
 
+  // Click Handler
   const clickHandler = (e) => {
     setIsActive(e.target.innerText);
   }
@@ -39,12 +43,12 @@ function Category({ categoryName }) {
       
       {!loading && <div className="">
         <div className="z-50 bg-primary py-4 flex flex-row justify-center items-center gap-4 font-palanquin font-medium text-2xl text-slate-gray sticky top-0 relative">
-        <p className="absolute top-4 left-2 font-palanquin font-bold text-black font-medium max-sm:text-xl">{categoryName}</p>
+        <p className="absolute top-4 left-2 font-palanquin font-bold text-black font-medium max-sm:text-xl textShadow">{categoryName}</p>
           {
             currentProducts.map((subCategory) => {
               if(subCategory.products.length){
               return (
-                <p key={subCategory._id} className={`hover:text-coral-red ${isActive === subCategory.subCategoryName ? "text-coral-red" : ""}`} onClick={clickHandler} name={subCategory.subCategoryName}>{subCategory.subCategoryName}</p>
+                <p key={subCategory._id} className={`hover:text-coral-red ${isActive === subCategory.subCategoryName ? "text-coral-red textShadow" : ""}`} onClick={clickHandler} name={subCategory.subCategoryName}>{subCategory.subCategoryName}</p>
               )
             } return<></>
             })

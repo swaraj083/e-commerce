@@ -1,32 +1,35 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
-import {addFeatured} from "../redux/features/product/productSlice"
+import { addFeatured } from "../redux/features/product/productSlice"
 
 function AddFeatured() {
-  const [featuredDetails,setFeaturedDetails] = useState({title:"",destURL:""});
-  const [thumbnail,setThumbnail] = useState(null);
-  const [imgInstance,setImgInstance] = useState("");
+  const [featuredDetails, setFeaturedDetails] = useState({ title: "", destURL: "" });
+  const [thumbnail, setThumbnail] = useState(null);
+  const [imgInstance, setImgInstance] = useState("");
   const dispatch = useDispatch();
+  const thumbnailInput = useRef(null);
 
-  const changeHandler = (e)=>{
-    setFeaturedDetails({...featuredDetails,[e.target.name]: e.target.value});
+  const changeHandler = (e) => {
+    setFeaturedDetails({ ...featuredDetails, [e.target.name]: e.target.value });
   }
 
-  const imgChangeHandler= (e)=>{
+  const imgChangeHandler = (e) => {
     setThumbnail(e.target.files[0]);
     setImgInstance(URL.createObjectURL(e.target.files[0]));
   }
 
-  const submitHandler = (e) =>{
+  const submitHandler = (e) => {
     e.preventDefault();
     const formData = new FormData();
-    formData.append("title",featuredDetails.title);
-    formData.append("thumbnail",thumbnail);
-    formData.append("destURL",featuredDetails.destURL);
+    formData.append("title", featuredDetails.title);
+    formData.append("thumbnail", thumbnail);
+    formData.append("destURL", featuredDetails.destURL);
     dispatch(addFeatured(formData));
-    setFeaturedDetails({title:"",destURL:""});
+    setFeaturedDetails({ title: "", destURL: "" });
     setThumbnail(null);
     setImgInstance("");
+    thumbnailInput.current.value = "";
+    thumbnailInput.current.type = "file";
 
   }
 
@@ -56,10 +59,14 @@ function AddFeatured() {
             file:bg-violet-50 file:text-violet-700
             hover:file:bg-violet-100
           "
+            ref={thumbnailInput}
             onChange={imgChangeHandler}
             required
           />
-          <img src={imgInstance} />
+          {
+            thumbnail !== null &&
+            <img src={imgInstance} />
+          }
         </label>
 
         <input

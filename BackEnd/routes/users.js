@@ -77,6 +77,7 @@ router.post("/createuser", async (req, res) => {
     // Response
     return res.status(200).json({
       success: true, authtoken, userInfo: {
+        id:user.id,
         firstName,
         lastName,
         email,
@@ -134,6 +135,7 @@ router.post("/login", async (req, res) => {
 
     // Response
     const userInfo = {
+      id:user.id,
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email,

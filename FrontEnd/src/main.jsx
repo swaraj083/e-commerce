@@ -5,7 +5,7 @@ import store from "./redux/store";
 import { Provider } from "react-redux";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Home, Category, Admin,Product, Cart } from "./pages";
-import { AdminDashBoard, AddProduct, Login, SignUp,AddFeatured } from "./components";
+import { DashBoard, AddProduct, Login, SignUp,AddFeatured, ViewOrUpdateFeatured } from "./components";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <Provider store={store}>
@@ -24,9 +24,10 @@ ReactDOM.createRoot(document.getElementById("root")).render(
             <Route path="signup/" element={<SignUp />} />
           </Route>
           <Route path="admin/" element={<Admin />}>
-            <Route path="" element={<AdminDashBoard />} />
+            <Route path="" element={<DashBoard />} />
             <Route path="add-product" element={<AddProduct />} />
             <Route path="add-featured" element={<AddFeatured />} />
+            <Route path="featured/update/:id" element={<ViewOrUpdateFeatured />} />
           </Route>
         </Routes>
       </Router>
