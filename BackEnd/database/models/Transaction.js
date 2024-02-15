@@ -34,6 +34,10 @@ const TransactionSchema = new mongoose.Schema(
       type:String,
       default:""
     },
+    userID:{
+      type:mongoose.Schema.Types.ObjectId,
+      ref:'User'
+    },
     transactionDate: {
       type: Date,
       default: Date.now,

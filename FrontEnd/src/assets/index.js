@@ -1,0 +1,1 @@
+export {default as checkAnimation} from "./Check animation.gif"

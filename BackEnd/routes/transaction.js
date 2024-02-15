@@ -4,7 +4,8 @@ const dotenv = require("dotenv");
 const fetchuser = require("../middlewares/fetchuser");
 const Transaction = require("../database/models/Transaction");
 const Razorpay = require('razorpay');
-const crypto = require('crypto')
+const crypto = require('crypto');
+const Product = require("../database/models/Product");
 
 dotenv.config()
 const router = express.Router();
@@ -13,7 +14,7 @@ router.get("/getkey/",async(req,res)=>{
     res.send({success:true,key:process.env.RAZOR_KEY_ID})
 })
 
-router.post("/generateorder/",async (req, res) => {
+router.post("/generateorder/",fetchuser,async (req, res) => {
     try {
         var instance = new Razorpay({ key_id: process.env.RAZOR_KEY_ID, key_secret: process.env.RAZOR_KEY_SECRET })
         // Add product List
@@ -30,22 +31,20 @@ router.post("/generateorder/",async (req, res) => {
         };
 
         await instance.orders.create(options, function (err, order) {
-            console.log(order)
             orderID = order.id;
-            console.log(orderID)
             res.status(200).json({success:true,order});
         });
         
-        console.log(orderID)
-        const transaction = await Transaction.create({products,orderID})
+        const transaction = await Transaction.create({products,orderID,userID:req.user.id})
         transaction.save();
     } catch (error) {
         return res.status(500).json({ success: false, message: error.message });
     }
 })
 
-router.post("/verification",fetchuser,async(req,res)=>{
-    try{const {razorpay_payment_id, razorpay_order_id,razorpay_signature} = req.body;
+router.post("/verification",async(req,res)=>{
+    try{
+        const {razorpay_payment_id, razorpay_order_id,razorpay_signature} = req.body;
 
     const body = razorpay_order_id + "|" + razorpay_payment_id;
 
@@ -57,13 +56,26 @@ router.post("/verification",fetchuser,async(req,res)=>{
     if (generated_signature == razorpay_signature) {
         let transaction = await Transaction.findOneAndUpdate({orderID:razorpay_order_id},{paymentID:razorpay_payment_id,signature:razorpay_signature});
         transaction.save();
-        const user = await User.findById(req.User.id);
+        const user = await User.findById(transaction.userID);
         user.previousTransactions.push(transaction);
         user.save();
+
         // Deduct the number of items from product quantity
-        res.redirect( `http://localhost:5173/paymentsuccess?reference=${razorpay_payment_id}`)
+        for(let i=0;i<transaction.products.length;i++){
+            const product = await Product.findById(transaction.products[i].pID)
+            for(let j=0;j<product.sizes.length;j++){
+                if(transaction.products[i].size === product.sizes[j].size){
+                    product.sizes[j].quantity -= transaction.products[i].quantity;
+                }
+            }
+
+            await product.save()
+        }
+
+
+        res.redirect( `${process.env.WEBSITE_URL}/paymentsuccess?reference=${razorpay_payment_id}`)
     }else{
-        res.send({success:false})
+        res.status(500).json({success:false})
     }
 }catch (error) {
     return res.status(500).json({ success: false, message: error.message });
