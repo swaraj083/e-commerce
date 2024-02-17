@@ -16,7 +16,7 @@ export const fetchProductsByCategory = createAsyncThunk(
       const data = await response.json();
       return data;
     } catch (e) {
-      return e.message;
+      return {success:false,error:"e.message"};
     }
   },
 );
@@ -30,7 +30,7 @@ export const fetchProductByID = createAsyncThunk("product/fetchProductByID", asy
     const data = await response.json();
     return data;
   } catch (e) {
-    return e.message;
+    return {success:false,error:"e.message"};
   }
 })
 
@@ -48,7 +48,7 @@ export const fetchIconicProductAndFeatured = createAsyncThunk(
       const data = await response.json();
       return data;
     } catch (e) {
-      return e.message;
+      return {success:false,error:"e.message"};
     }
   },
 );
@@ -67,7 +67,7 @@ export const addProduct = createAsyncThunk(
       const data = await response.json();
       return data;
     } catch (e) {
-      return e.message;
+      return {success:false,error:"e.message"};
     }
   },
 );
@@ -90,7 +90,7 @@ export const updateProduct = createAsyncThunk(
       const data = await response.json();
       return data;
     } catch (e) {
-      return e.message;
+      return {success:false,error:"e.message"};
     }
   },
 );
@@ -108,7 +108,22 @@ export const addFeatured = createAsyncThunk("product/addFeatured", async (detail
     const data = await response.json();
     return data;
   } catch (e) {
-    return e.message;
+    return {success:false,error:"e.message"};
+  }
+})
+
+export const getFeaturedByID = createAsyncThunk("product/getFeaturedByID",async(id)=>{
+  try{
+    const response = await fetch(`${host}/featured/getByID/${id}`,{
+      method:"GET",
+      headers:{
+        "Content-Type":"application/json",
+      }
+    })
+    const data = await response.json();
+    return data;
+  }catch (e) {
+    return {success:false,error:"e.message"};
   }
 })
 
@@ -118,6 +133,7 @@ const productSlice = createSlice({
     product: null,
     allProducts: [],
     featured: [],
+    currentFeatured : null,
     iconicProducts: [],
     loading: false,
     errorMessage: null,
@@ -137,7 +153,7 @@ const productSlice = createSlice({
       })
       .addCase(fetchProductsByCategory.rejected, (state, action) => {
         state.loading = false;
-        state.errorMessage = action.payload;
+        state.errorMessage = action.payload.error;
       })
       .addCase(fetchProductByID.pending, (state) => {
         state.loading = true;
@@ -150,7 +166,7 @@ const productSlice = createSlice({
       })
       .addCase(fetchProductByID.rejected, (state, action) => {
         state.loading = false;
-        state.errorMessage = action.payload;
+        state.errorMessage = action.payload.error;
       })
       .addCase(fetchIconicProductAndFeatured.pending, (state) => {
         state.featuredAndIconicStatus = "loading";
@@ -162,7 +178,7 @@ const productSlice = createSlice({
       })
       .addCase(fetchIconicProductAndFeatured.rejected, (state, action) => {
         state.featuredAndIconicStatus = "rejected";
-        state.errorMessage = action.payload;
+        state.errorMessage = action.payload.error;
       })
       .addCase(addProduct.pending, (state) => {
         state.loading = true;
@@ -174,12 +190,12 @@ const productSlice = createSlice({
             state.iconicProducts.push(action.payload.product)
           }
         } else {
-          state.errorMessage = action.payload;
+          state.errorMessage = action.payload.error;
         }
       })
       .addCase(addProduct.rejected, (state, action) => {
         state.loading = false;
-        state.errorMessage = action.payload;
+        state.errorMessage = action.payload.error;
       })
       .addCase(updateProduct.pending, (state) => {
         state.loading = true;
@@ -195,7 +211,7 @@ const productSlice = createSlice({
       })
       .addCase(updateProduct.rejected, (state, action) => {
         state.loading = false;
-        state.errorMessage = action.payload;
+        state.errorMessage = action.payload.error;
       })
       .addCase(addFeatured.pending, (state) => {
         state.loading = true;
@@ -209,12 +225,28 @@ const productSlice = createSlice({
             state.featured.push(action.payload.featured);
           }
         } else {
-          state.errorMessage = action.payload;
+          state.errorMessage = action.payload.error;
         }
       })
       .addCase(addFeatured.rejected, (state, action) => {
         state.loading = false;
-        state.errorMessage = action.payload;
+        state.errorMessage = action.payload.error;
+      })
+      .addCase(getFeaturedByID.pending,(state,action)=>{
+        state.loading = true;
+      })
+      .addCase(getFeaturedByID.fulfilled,(state,action)=>{
+        state.loading = false;
+        if (action.payload.success) {
+            state.currentFeatured = action.payload.featured
+          
+        } else {
+          state.errorMessage = action.payload.error;
+        }
+      })
+      .addCase(getFeaturedByID.rejected,(state,action)=>{
+        state.loading=false;
+        state.errorMessage = action.payload.error;
       })
   },
 });

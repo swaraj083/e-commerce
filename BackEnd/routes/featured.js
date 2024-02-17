@@ -27,7 +27,25 @@ const router = express.Router();
 ////////////////////
 // REQUEST -> GET //
 ////////////////////
-
+/**
+ * @author Omkar Mahangare
+ * @desc Get a Featured from its ID
+ * @route GET featured/getByID/:id
+ * @access public
+ */
+router.get("/getByID/:id",async(req,res)=>{
+    try
+    {
+        const {id} = req.params;
+        const featured = await Featured.findById(id);
+        
+        if(featured){
+            res.status(200).json({success:true,featured});
+        }
+    } catch (e) {
+        return res.status(500).json({ success: false, message: e.message });
+    }
+})
 
 /////////////////////
 // REQUEST -> POST //
@@ -59,6 +77,13 @@ router.post("/add", isAdmin, upload.single("thumbnail"), async (req, res) => {
         return res.status(500).json({ success: false, message: e.message });
     }
 })
+
+////////////////////
+// REQUEST -> PUT //
+////////////////////
+
+
+
 
 ///////////////////////
 // REQUEST -> DELETE //
