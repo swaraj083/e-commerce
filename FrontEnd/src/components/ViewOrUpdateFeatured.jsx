@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { getFeaturedByID } from "../redux/features/product/productSlice";
+import { getFeaturedByID, updateFeaturedByID } from "../redux/features/product/productSlice";
 
+// Add alert
 const ViewOrUpdateFeatured = () => {
     const [featured,setFeatured] = useState(null);
     const [thumbnail, setThumbnail] = useState(null);
@@ -30,10 +31,10 @@ const ViewOrUpdateFeatured = () => {
             formData.append("title",featured.title);
             formData.append("destURL",featured.destURL);
             formData.append("thumbnail",thumbnail);
-            console.log("hi")
+            dispatch(updateFeaturedByID({id,details:formData}));
         }
+
         setThumbnail(null);
-        setImgInstance(null);
         thumbnailInput.current.value = "";
         thumbnailInput.current.type = "file";
     }

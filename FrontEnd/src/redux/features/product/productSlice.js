@@ -127,6 +127,39 @@ export const getFeaturedByID = createAsyncThunk("product/getFeaturedByID",async(
   }
 })
 
+export const updateFeaturedByID = createAsyncThunk("product/updateFeaturedByID",async({id,details})=>{
+  try {
+    const response = await fetch(`${host}/featured/update/${id}`,{
+      method:"PUT",
+      headers:{
+        "authtoken": localStorage.getItem("authtoken")
+      },
+      body:details
+    })
+
+    const data = await response.json();
+    return data;
+  }catch (e) {
+    return {success:false,error:"e.message"};
+  }
+})
+
+export const deleteFeaturedByID = createAsyncThunk("product/deleteFeaturedByID",async(id)=>{
+  try {
+    const response = await fetch(`${host}/featured/delete/${id}`,{
+      method:"DELETE",
+      headers:{
+        "authtoken": localStorage.getItem("authtoken")
+      }
+    })
+
+    const data = await response.json();
+    return data;
+  }catch (e) {
+    return {success:false,error:"e.message"};
+  }
+})
+
 const productSlice = createSlice({
   name: "product",
   initialState: {
@@ -245,6 +278,49 @@ const productSlice = createSlice({
         }
       })
       .addCase(getFeaturedByID.rejected,(state,action)=>{
+        state.loading=false;
+        state.errorMessage = action.payload.error;
+      })
+      .addCase(updateFeaturedByID.pending,(state,action)=>{
+        state.loading = true;
+      })
+      .addCase(updateFeaturedByID.fulfilled,(state,action)=>{
+        state.loading = false;
+        if (action.payload.success) {
+            for(let i=0;i<state.featured.length;i++){
+              if(state.featured[i].id === action.payload.featured.id){
+                state.featured[i] = action.payload.featured;
+                break;
+              }
+            }
+        } else {
+          state.errorMessage = action.payload.error;
+        }
+      })
+      .addCase(updateFeaturedByID.rejected,(state,action)=>{
+        state.loading=false;
+        state.errorMessage = action.payload.error;
+      })
+      .addCase(deleteFeaturedByID.pending,(state,action)=>{
+        state.loading = true;
+      })
+      .addCase(deleteFeaturedByID.fulfilled,(state,action)=>{
+        state.loading = false;
+        let idx = -1;
+        if (action.payload.success) {
+            for(let i=0;i<state.featured.length;i++){
+              if(state.featured[i].id === action.payload.id){
+                idx = i;
+                break;
+              }
+            }
+
+            state.featured.splice(idx,1);
+        } else {
+          state.errorMessage = action.payload.error;
+        }
+      })
+      .addCase(deleteFeaturedByID.rejected,(state,action)=>{
         state.loading=false;
         state.errorMessage = action.payload.error;
       })

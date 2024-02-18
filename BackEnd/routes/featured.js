@@ -2,6 +2,7 @@
 // MODULE IMPORT //
 ///////////////////
 const express = require("express");
+const fs = require("fs");
 
 ///////////////////////////
 // DATABASE MODEL IMPORT //
@@ -81,8 +82,44 @@ router.post("/add", isAdmin, upload.single("thumbnail"), async (req, res) => {
 ////////////////////
 // REQUEST -> PUT //
 ////////////////////
+/**
+ * @author Omkar Mahangare
+ * @desc Update a featured using its ID
+ * @route PUT featured/update/:id
+ * @access Private
+ */
+router.put("/update/:id",isAdmin,upload.single("thumbnail"),async(req,res)=>{
+    try {   
+        const {title,destURL} = req.body;
+        const {id} = req.params;
+        const thumbnail = req.file?.filename || null;
+        
+        const featured = await Featured.findById(id);
 
+        if(!featured){
+            return res.status(404).json({success:false,message:"Featured Not Found"})
+        }
 
+        if(title!=featured.title){
+            featured.title = title;
+        }
+        if(destURL!=featured.destURL){
+            featured.destURL = destURL;
+        }
+        if(thumbnail!==null){
+            fs.unlink(`./uploads/${featured.thumbnail}`,(err)=>{
+                if(err) throw err;
+            })
+            featured.thumbnail = thumbnail;
+        }
+
+        await featured.save();
+
+        res.status(200).json({success:true,featured});
+    } catch (e) {
+        return res.status(500).json({ success: false, message: e.message });
+    }
+})
 
 
 ///////////////////////
@@ -95,7 +132,7 @@ router.post("/add", isAdmin, upload.single("thumbnail"), async (req, res) => {
  * @route DELETE featured/remove/:id
  * @access Private
  */
-router.delete("/remove/:id", isAdmin, async (req, res) => {
+router.delete("/delete/:id", isAdmin, async (req, res) => {
     try {
         // Fetch the Featured
         let featured = await Featured.findById(req.params.id);
@@ -104,10 +141,13 @@ router.delete("/remove/:id", isAdmin, async (req, res) => {
         if (!featured) { return res.status(404).send("Not Found") }
 
         // Delete 
+        fs.unlink(`./uploads/${featured.thumbnail}`,(err)=>{
+            if(err) throw err;
+        })
         await Featured.findByIdAndDelete(req.params.id);
 
         //Response
-        res.status(200).json({ success: true });
+        res.status(200).json({ success: true,id:req.params.id });
     } catch (e) {
         return res.status(500).json({ success: false, message: e.message });
     }

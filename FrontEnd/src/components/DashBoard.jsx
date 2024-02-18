@@ -1,10 +1,15 @@
 import React, { useEffect } from "react";
 import StatCard from "./StatCard";
 import { useSelector,useDispatch } from "react-redux";
-import { fetchIconicProductAndFeatured } from "../redux/features/product/productSlice"
+import { deleteFeaturedByID, fetchIconicProductAndFeatured } from "../redux/features/product/productSlice"
 import { Link } from "react-router-dom";
 
 const DashBoardTable = ({heading,data}) => {
+  const dispatch = useDispatch();
+  const deleteHandler = (id)=>{
+    dispatch(deleteFeaturedByID(id))
+  }
+
   return (
     <section className="mt-5">
         <h1 className="text-2xl text-slate-gray font-bold p-2 border-b-2 border-slate-gray">{heading}</h1>
@@ -21,7 +26,7 @@ const DashBoardTable = ({heading,data}) => {
               <p className="w-4/6">{item.title}</p>
               <div className="w-1/6 flex justify-center items-center gap-2">
                 <Link to={`featured/update/${item._id}`} className="px-3 py-2 bg-green-400 text-white rounded-full">Update</Link>
-                <Link className="px-3 py-2 bg-red-400 text-white rounded-full">Delete</Link>
+                <Link className="px-3 py-2 bg-red-400 text-white rounded-full" onClick={()=>{deleteHandler(item._id)}}>Delete</Link>
               </div>
             </div>
               )
