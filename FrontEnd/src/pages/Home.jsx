@@ -6,7 +6,7 @@ import {
   ProductSlider,
   Categories,
 } from "../components";
-import { fetchIconicProductAndFeatured } from "../redux/features/product/productSlice"
+import { fetchAllProducts, fetchIconicProductAndFeatured } from "../redux/features/product/productSlice"
 import { useDispatch, useSelector } from "react-redux";
 
 function Home() {
@@ -15,6 +15,7 @@ function Home() {
 
   useEffect(() => {
     dispatch(fetchIconicProductAndFeatured())
+    dispatch(fetchAllProducts());
   }, [])
 
   return (<>

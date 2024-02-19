@@ -53,6 +53,22 @@ export const fetchIconicProductAndFeatured = createAsyncThunk(
   },
 );
 
+export const fetchAllProducts = createAsyncThunk("product/fetchAllProducts",async()=>{
+  try {
+    const response = await fetch(`${host}/products/get-all-products`,{
+      method:"GET",
+      headers:{
+        "Content-Type":"application/json",
+      },
+    });
+    
+    const data = await response.json();
+    return data;
+  } catch (e) {
+    return {success:false,error:"e.message"};
+  }
+})
+
 export const addProduct = createAsyncThunk(
   "product/addProduct",
   async (product) => {
@@ -164,7 +180,8 @@ const productSlice = createSlice({
   name: "product",
   initialState: {
     product: null,
-    allProducts: [],
+    allProductsByCategory: [],
+    allProducts:[],
     featured: [],
     currentFeatured : null,
     iconicProducts: [],
@@ -175,13 +192,26 @@ const productSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
+      .addCase(fetchAllProducts.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchAllProducts.fulfilled, (state, action) => {
+        state.loading = false;
+        if (action.payload.success) {
+          state.allProducts = action.payload.allProducts;
+        }
+      })
+      .addCase(fetchAllProducts.rejected, (state, action) => {
+        state.loading = false;
+        state.errorMessage = action.payload.error;
+      })
       .addCase(fetchProductsByCategory.pending, (state) => {
         state.loading = true;
       })
       .addCase(fetchProductsByCategory.fulfilled, (state, action) => {
         state.loading = false;
         if (action.payload.success) {
-          state.allProducts = action.payload.allProducts;
+          state.allProductsByCategory = action.payload.allProducts;
         }
       })
       .addCase(fetchProductsByCategory.rejected, (state, action) => {
@@ -236,9 +266,9 @@ const productSlice = createSlice({
       .addCase(updateProduct.fulfilled, (state, action) => {
         state.loading = false;
 
-        for (let i = 0; i < state.allProducts.length; i++) {
-          if (state.allProducts[i].id == action.payload.id) {
-            state.allProducts[i] = action.action.payload.product;
+        for (let i = 0; i < state.allProductsByCategory.length; i++) {
+          if (state.allProductsByCategory[i].id == action.payload.id) {
+            state.allProductsByCategory[i] = action.action.payload.product;
           }
         }
       })

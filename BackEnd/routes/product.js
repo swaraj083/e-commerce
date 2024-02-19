@@ -150,6 +150,21 @@ router.get("/get-product/:id", async (req, res) => {
     }
 })
 
+/**
+ * @author Omkar Mahangare
+ * @desc Send All Products Product
+ * @route GET products/get-all-products/
+ * @access Public
+ */
+router.get("/get-all-products",async(req,res)=>{
+    try{
+        const allProducts = await Product.find();
+        res.status(200).json({success:true,allProducts});
+    } catch (e) {
+        return res.status(500).json({ success: false, message: e.message });
+    }
+})
+
 /////////////////////
 // REQUEST -> POST //
 /////////////////////

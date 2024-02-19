@@ -10,7 +10,7 @@ function Category({ categoryName }) {
   const [currentProducts, setCurrentProducts] = useState([]);
   
   // Redux
-  const { allProducts, loading } = useSelector((state) => state.product);
+  const { allProductsByCategory, loading } = useSelector((state) => state.product);
   const dispatch = useDispatch();
   
   // useEffects
@@ -20,18 +20,18 @@ function Category({ categoryName }) {
   }, [categoryName])
   
   useEffect(() => {
-    setCurrentProducts(allProducts)
-    if (allProducts.length > 0) {
-      for(let i=0;i<allProducts.length;i++){
-        if(allProducts[i].products.length>0){
-          setIsActive(allProducts[i].subCategoryName)
+    setCurrentProducts(allProductsByCategory)
+    if (allProductsByCategory.length > 0) {
+      for(let i=0;i<allProductsByCategory.length;i++){
+        if(allProductsByCategory[i].products.length>0){
+          setIsActive(allProductsByCategory[i].subCategoryName)
           break
         }else{
           setIsActive("")
         }
       }
     }
-  }, [allProducts])
+  }, [allProductsByCategory])
 
   // Click Handler
   const clickHandler = (e) => {
