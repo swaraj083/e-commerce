@@ -4,8 +4,8 @@ import { Link } from "react-router-dom";
 function Featured({ items }) {
   const host="http://localhost:5000/uploads/";
   return (
-    <section className="my-4">
-      <h1 className="text-slate-gray m-0 text-4xl font-montserrat font-medium max-sm:text-2xl">
+    <section className="px-8 py-4 bg-blue-400">
+      <h1 className="text-white mb-8 text-6xl text-center font-montserrat font-bold textShadow max-sm:text-4xl">
         Featured
       </h1>
       <div className="flex flex-row gap-8 flex-wrap justify-center items-center m-4">

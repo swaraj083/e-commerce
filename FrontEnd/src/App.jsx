@@ -16,7 +16,7 @@ export default function App() {
   return (
     <main className="bg-primary">
       <NavBar />
-      <section className="px-8">
+      <section className="">
         <Outlet />
       </section>
       <Footer />

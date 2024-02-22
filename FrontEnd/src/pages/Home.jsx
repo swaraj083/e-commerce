@@ -21,10 +21,10 @@ function Home() {
   return (<>
     {featuredAndIconicStatus !== "loading" && <div>
       <Hero />
-      <OfferBanner />
-      {featured.length > 0 && <Featured items={featured} />}
-      {iconicProducts.length > 0 && <ProductSlider />}
-      <Categories />
+      {/* <OfferBanner /> */}
+      {featured?.length > 0 && <Featured items={featured} />}
+      {iconicProducts?.length > 0 && <ProductSlider />}
+      {/* <Categories /> */}
     </div>
     }
     </>

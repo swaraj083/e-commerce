@@ -52,7 +52,7 @@ const ViewOrUpdateFeatured = () => {
         <div>
             { !loading &&
             <>
-                <h1>Featured</h1>
+                <h1 className="text-4xl text-center my-4 font-bold textShadow">Featured</h1>
                 <form onSubmit={submitHandler} className="w-full px-8 py-4 flex flex-col justify-center items-center gap-4">
                     <div className="w-full">
                         <label htmlFor="title">Title:</label>
