@@ -2,24 +2,24 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 const host = "http://localhost:5000";
 
-export const fetchProductsByCategory = createAsyncThunk(
-  "product/fetchProductsByCategory",
-  async (category) => {
-    try {
-      const response = await fetch(`${host}/products/getproducts/${category}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+// export const fetchProductsByCategory = createAsyncThunk(
+//   "product/fetchProductsByCategory",
+//   async (category) => {
+//     try {
+//       const response = await fetch(`${host}/products/getproducts/${category}`, {
+//         method: "GET",
+//         headers: {
+//           "Content-Type": "application/json",
+//         },
+//       });
 
-      const data = await response.json();
-      return data;
-    } catch (e) {
-      return {success:false,error:"e.message"};
-    }
-  },
-);
+//       const data = await response.json();
+//       return data;
+//     } catch (e) {
+//       return {success:false,error:"e.message"};
+//     }
+//   },
+// );
 
 export const fetchProductByID = createAsyncThunk("product/fetchProductByID", async (productID) => {
   try {
@@ -90,18 +90,16 @@ export const addProduct = createAsyncThunk(
 
 export const updateProduct = createAsyncThunk(
   "product/updateProduct",
-  async (product, productID) => {
+  async ({product, productID}) => {
+    console.log(product)
     try {
-      const response = await fetch(
-        `${host}/products/updateproduct/${productID}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(product),
-        },
-      );
+      const response = await fetch(`${host}/products/update-product/${productID}`,{
+      method:"PUT",
+      headers:{
+        "authtoken": localStorage.getItem("authtoken"),
+      },
+      body:product
+    })
 
       const data = await response.json();
       return data;
@@ -124,6 +122,22 @@ export const addFeatured = createAsyncThunk("product/addFeatured", async (detail
     const data = await response.json();
     return data;
   } catch (e) {
+    return {success:false,error:"e.message"};
+  }
+})
+
+export const deleteProductByID = createAsyncThunk("product/deleteProductByID",async(id)=>{
+  try {
+    const response = await fetch(`${host}/products/remove/${id}`,{
+      method:"DELETE",
+      headers:{
+        "authtoken": localStorage.getItem("authtoken")
+      }
+    })
+
+    const data = await response.json();
+    return data;
+  }catch (e) {
     return {success:false,error:"e.message"};
   }
 })
@@ -180,7 +194,7 @@ const productSlice = createSlice({
   name: "product",
   initialState: {
     product: null,
-    allProductsByCategory: [],
+    // allProductsByCategory: [],
     allProducts:[],
     featured: [],
     currentFeatured : null,
@@ -205,19 +219,19 @@ const productSlice = createSlice({
         state.loading = false;
         state.errorMessage = action.payload.error;
       })
-      .addCase(fetchProductsByCategory.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(fetchProductsByCategory.fulfilled, (state, action) => {
-        state.loading = false;
-        if (action.payload.success) {
-          state.allProductsByCategory = action.payload.allProducts;
-        }
-      })
-      .addCase(fetchProductsByCategory.rejected, (state, action) => {
-        state.loading = false;
-        state.errorMessage = action.payload.error;
-      })
+      // .addCase(fetchProductsByCategory.pending, (state) => {
+      //   state.loading = true;
+      // })
+      // .addCase(fetchProductsByCategory.fulfilled, (state, action) => {
+      //   state.loading = false;
+      //   if (action.payload.success) {
+      //     state.allProductsByCategory = action.payload.allProducts;
+      //   }
+      // })
+      // .addCase(fetchProductsByCategory.rejected, (state, action) => {
+      //   state.loading = false;
+      //   state.errorMessage = action.payload.error;
+      // })
       .addCase(fetchProductByID.pending, (state) => {
         state.loading = true;
       })
@@ -266,13 +280,29 @@ const productSlice = createSlice({
       .addCase(updateProduct.fulfilled, (state, action) => {
         state.loading = false;
 
-        for (let i = 0; i < state.allProductsByCategory.length; i++) {
-          if (state.allProductsByCategory[i].id == action.payload.id) {
-            state.allProductsByCategory[i] = action.action.payload.product;
+        // for (let i = 0; i < state.allProductsByCategory.length; i++) {
+        //   if (state.allProductsByCategory[i].id == action.payload.id) {
+        //     state.allProductsByCategory[i] = action.action.payload.product;
+        //   }
+        // }
+      })
+      .addCase(updateProduct.rejected, (state, action) => {
+        state.loading = false;
+        state.errorMessage = action.payload.error;
+      })
+      .addCase(deleteProductByID.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(deleteProductByID.fulfilled, (state, action) => {
+        state.loading = false;
+
+        for (let i = 0; i < state.allProducts.length; i++) {
+          if (state.allProducts[i].id == action.payload.id) {
+            state.allProducts = state.allProducts.splice(i,1);
           }
         }
       })
-      .addCase(updateProduct.rejected, (state, action) => {
+      .addCase(deleteProductByID.rejected, (state, action) => {
         state.loading = false;
         state.errorMessage = action.payload.error;
       })

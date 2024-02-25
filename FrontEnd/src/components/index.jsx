@@ -13,4 +13,5 @@ export { default as OfferBanner } from "./OfferBanner";
 export { default as ProductSlider } from "./ProductSlider";
 export { default as StatCard } from "./StatCard";
 export { default as SignUp } from "./SignUp";
-export {default as ViewOrUpdateFeatured} from "./ViewOrUpdateFeatured"
+export {default as ViewOrUpdateFeatured} from "./ViewOrUpdateFeatured";
+export {default as ViewOrUpdateProduct} from "./ViewOrUpdateProduct";

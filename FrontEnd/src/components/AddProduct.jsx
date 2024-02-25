@@ -4,17 +4,18 @@ import { addProduct } from "../redux/features/product/productSlice";
 
 function AddProduct() {
   // State Variables
-  const [productDetails, setProductDetails] = useState({ name: "", category: "Kids", subCategory: "TShirts", isIconic: false });
+  const [productDetails, setProductDetails] = useState({ name: "", category: "T-Shirts",gender:[], isIconic: "false",isSports:"false" });
   const [individualSize, setIndividualSize] = useState({ size: "", quantity: 0, price: 0 });
   const [sizes, setSizes] = useState([]);
   const [thumbnail, setThumbnail] = useState(null);
   const [thumbnailPreview, setThumbnailPreview] = useState("");
+  // let gender = []
 
   // Reference Variables  
   const thumbnailInput = useRef(null);
-  const categoryRef = useRef("Kids");
-  const subCategoryRef = useRef("TShirts");
+  const categoryRef = useRef("T-Shirts");
   const iconicRef = useRef("false");
+  const sportsRef = useRef("false");
 
   // Redux
   const dispatch = useDispatch();
@@ -39,6 +40,17 @@ function AddProduct() {
     setIndividualSize({ size: "", quantity: 0, price: 0 })
   }
 
+  // const checkboxHandler = (e)=>{
+  //   const present = gender.includes(String(e.target.name))
+  //   if(present){
+  //     gender.splice(gender.indexOf(e.target.name),1);
+  //   }else{
+  //     gender.push(e.target.name)
+  //   }
+
+  //   setProductDetails({...productDetails,gender})
+  // }
+
   // Submit Handler
   const submitHandler = (e) => {
     e.preventDefault();
@@ -46,31 +58,35 @@ function AddProduct() {
     // FormData
     const formData = new FormData();
     formData.append("name", productDetails.name);
+    formData.append("gender", JSON.stringify(productDetails.gender));
     formData.append("category", productDetails.category);
-    formData.append("subCategory", productDetails.subCategory);
     formData.append("sizes", JSON.stringify(sizes));
+    formData.append("isIconic", productDetails.isIconic);
+    formData.append("isSports", productDetails.isSports);
 
-    if (productDetails.isIconic === 'isIconic') {
-      formData.append("isIconic", false);
-    } else {
-      formData.append("isIconic", productDetails.isIconic);
-    }
+    // if (productDetails.isIconic === 'isIconic') {
+    //   formData.append("isIconic", false);
+    // } else {
+    //   formData.append("isIconic", productDetails.isIconic);
+    // }
 
     formData.append("thumbnail", thumbnail);
+
+    // console.log(productDetails,gender)
 
     // Redux
     dispatch(addProduct(formData));
 
     // ReInitialization
-    setProductDetails({ name: "", category: "Kids", subCategory: "TShirts", isIconic: false });
+    setProductDetails({ name: "", gender: [], category: "T-Shirts", isIconic: false,isSports:false });
     setSizes([])
     setThumbnail(null);
     setThumbnailPreview("");
     thumbnailInput.current.value = "";
     thumbnailInput.current.type = "file";
-    categoryRef.current.value = "Kids";
-    subCategoryRef.current.value = "TShirts";
+    categoryRef.current.value = "T-Shirts";
     iconicRef.current.value = "false";
+    sportsRef.current.value = "false";
   }
 
   return (
@@ -91,49 +107,68 @@ function AddProduct() {
         />
 
         {/* Instead of repeating same block use a map for code reuse  */}
-        <div className="flex flex-row items-center gap-10">
+        <div className="grid grid-cols-3 items-center gap-2">
 
-          <div className="flex flex-row items-center gap-2">
-            <label htmlFor="category" className="w-fit px-2 text-slate-gray text-lg font-medium font-monserrat">Select Category</label>
-            <select
-              name="category"
-              className="w-fit p-2 border border-gray-300 rounded-lg"
-              onChange={changeHandler}
-              required
-              defaultValue={"Kids"}
-              ref={categoryRef}
-            >
-              <option value="Kids">Kids</option>
-              <option value="Men">Men</option>
-              <option value="Women">Women</option>
-              <option value="Sports">Sports</option>
-            </select>
+          <div className="col-span-3 flex flex-row items-center gap-2">
+            <label htmlFor="gender" className="w-fit px-2 text-slate-gray text-lg font-medium font-monserrat">Select Gender</label>
+            <input type="text" name="gender" placeholder="Gender separated by commas (e.g Men,Women)" className="w-3/4 bg-white py-1 px-3 border border-gray-300 rounded-lg" onChange={(e)=>{
+              setProductDetails({...productDetails,gender:e.target.value.split(",")})
+            }} />
+            {/* <div className="flex flex-row gap-8">
+              <div className="flex gap-1 justify-center items-center">
+                <input type="checkbox" name="Kids" onChange={checkboxHandler} />
+                <label htmlFor="Kids" className="text-base font-medium">Kids</label>
+              </div>
+              <div className="flex gap-1 justify-center items-center">
+                <input type="checkbox" name="Men"  onChange={checkboxHandler}/>
+                <label htmlFor="Men" className="text-base font-medium">Men</label>
+              </div>
+              <div className="flex gap-1 justify-center items-center">
+                <input type="checkbox" name="Women" onChange={checkboxHandler} />
+                <label htmlFor="Women" className="text-base font-medium">Women</label>
+              </div>
+            </div> */}
           </div>
 
-          <div className="flex flex-row items-center gap-2">
-            <label htmlFor="subCategory" className="w-fit px-2 text-slate-gray text-lg font-medium font-monserrat">Select Sub-Category</label>
+          <div className="col-span-1 flex flex-row items-center gap-2">
+            <label htmlFor="category" className="w-fit px-2 text-slate-gray text-lg font-medium font-monserrat">Select Sub-Category</label>
             <select
               name="subCategory"
               className="w-fit p-2 border border-gray-300 rounded-lg"
               onChange={changeHandler}
               required
-              defaultValue={"TShirts"}
-              ref={subCategoryRef}
+              defaultValue={"T-Shirts"}
+              ref={categoryRef}
             >
-              <option value="TShirts">TShirts</option>
+              <option value="T-Shirts">T-Shirts</option>
               <option value="Shoes">Shoes</option>
             </select>
           </div>
 
-          <div className="flex flex-row items-center gap-2">
+          <div className="col-span-1 flex flex-row items-center gap-2">
             <label htmlFor="isIconic" className="w-fit px-2 text-slate-gray text-lg font-medium font-monserrat">Iconic</label>
             <select
               name="isIconic"
-              className="w-full p-2 border border-gray-300 rounded-lg"
+              className="w-fit p-2 border border-gray-300 rounded-lg"
               onChange={changeHandler}
               required
               defaultValue={"false"}
               ref={iconicRef}
+            >
+              <option value="true">True</option>
+              <option value="false">False</option>
+            </select>
+          </div>
+
+          <div className="col-span-1 flex flex-row items-center gap-2">
+            <label htmlFor="isSports" className="w-fit px-2 text-slate-gray text-lg font-medium font-monserrat">Sports</label>
+            <select
+              name="isSports"
+              className="w-fit p-2 border border-gray-300 rounded-lg"
+              onChange={changeHandler}
+              required
+              defaultValue={"false"}
+              ref={sportsRef}
             >
               <option value="true">True</option>
               <option value="false">False</option>

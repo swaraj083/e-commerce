@@ -40,12 +40,12 @@ export default function Product() {
             <Alert type={alertMessage.type} message={alertMessage.message} setMessage={setAlertMessage} />
         }
         {
-            (!loading && product) && <div className="flex flex-row gap-5 px-8 py-4">
-                <div className="w-2/5">
-                    <img src={host + "/uploads/" + product.thumbnail} />
+            (!loading && product) && <div className="grid grid-cols-2 gap-2 px-8 py-4">
+                <div className="col-span-1">
+                    <img src={host + "/uploads/" + product.thumbnail} className="w-full h-auto" />
                 </div>
-                <div className="w-2/5 flex flex-col gap-2">
-                    <h1 className="text-4xl text-slate-gray font-bold font-monserrat">{product.name}</h1>
+                <div className="col-span-1 flex flex-col justify-center gap-2 px-4">
+                    <h1 className="text-4xl text-black font-bold font-monserrat textShadow">{product.name}</h1>
                     <div className="flex flex-row gap-2 ">
                         {
                             (Date.now() - Date.parse(product.createdAt)) < 604800000 && <p className="text-sm py-2 px-4 text-white bg-coral-red font-bold font-monserrat rounded-full">
@@ -60,11 +60,11 @@ export default function Product() {
                     </div>
                     <div>
                         <h1 className="text-xl text-slate-gray font-monserrat font-bold">Sizes</h1>
-                        <div className="flex flex-row flex-wrap gap-2 justify-start p-4">
+                        <div className="grid grid-cols-6 gap-2 justify-start px-4 my-2">
                             {
                                 product.sizes.map((size) => {
                                     if (size.quantity > 0) {
-                                        return <div key={size._id} className="text-xl border-2 border-slate-gray rounded-lg py-1 px-4" onClick={() => { sizeClickHandler(size) }}>{size.size}</div>
+                                        return <div key={size._id} className={`col-span-1 text-xl text-center border-2 ${sizeDetails.size===size.size?"bg-black text-white border-black":"bg-white text-black border-slate-gray"} rounded-lg py-1 px-4`} onClick={() => { sizeClickHandler(size) }}>{size.size}</div>
                                     }
                                 })
                             }
@@ -74,8 +74,12 @@ export default function Product() {
                     {
                         (sizeDetails.quantity === "" && sizeDetails.price == "") && <p className="text-coral-red text-xl font-bold">Select the Size to Show MRP</p>
                     }
-                    {sizeDetails.quantity !== "" && <p className="text-slate-gray text-lg">MRP : {sizeDetails.price}</p>}
-                    <button className={`text-2xl py-2 px-4 ${(sizeDetails.quantity !== "" && sizeDetails.quantity > 0) ? "bg-coral-red" : "bg-slate-gray"} text-white rounded-full w-fit hover:bg-slate-gray`} onClick={addToBagClickHandler}>Add to Bag</button>
+                    {sizeDetails.quantity !== "" && <p className="text-black text-lg font-semibold">MRP : <span className="text-coral-red font-bold">{sizeDetails.price}</span></p>}
+                    <button className={`text-2xl py-2 px-4 ${(sizeDetails.quantity !== "" && sizeDetails.quantity > 0) ? "bg-black" : "bg-slate-gray"} text-white w-full`} onClick={addToBagClickHandler}>Add to Bag</button>
+                    <div>
+                        <h1 className="text-black text-lg font-bold">Description:</h1>
+                        <p className="text-slate-900 text-base font-medium">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ab excepturi quidem veniam quae eum cumque, nulla aspernatur eaque. Explicabo quaerat voluptate doloremque ratione aut expedita aperiam vero culpa neque modi.</p>
+                    </div>
                 </div>
             </div>
         }
