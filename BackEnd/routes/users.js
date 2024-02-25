@@ -39,7 +39,6 @@ router.post("/createuser", async (req, res) => {
 
     // User Already Exists
     if (await User.findOne({ email })) {
-      console.log("User Already exits")
       return res.status(400).json({ success: false, msg: "User already exists" });
     }
 

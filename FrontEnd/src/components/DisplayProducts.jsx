@@ -8,15 +8,16 @@ const avgPrice = (productSizeList) => {
         price+= productSizeList[i].price;
     }
 
-    return price/productSizeList.length;
+    return Math.floor(price/productSizeList.length);
 }
 
 export default function DisplayProducts({products}){
+    console.log(products)
     const host = "http://localhost:5000";
-    return <div className="flex flex-row flex-wrap gap-2 w-full justify-center items-center">
-        {products.map((product)=>{
+    return <div className="grid grid-cols-4 gap-4 w-full justify-center items-center">
+        {products?.map((product)=>{
             return (
-                <Link key={product._id} to={`/product/${product._id}`} className="w-1/4 flex flex-col justify-center items-center gap-4 gapy-4 shadow-lg p-4 bg-white-400">
+                <Link key={product._id} to={`/product/${product._id}`} className="col-span-1 flex flex-col justify-center items-center gap-4 gapy-4 shadow-lg p-4 bg-white-400 rounded-md">
                     <img src={host+"/uploads/"+product.thumbnail} className="rounded-lg" />
                     <div className="flex flex-col justify-center self-start pl-2">
                     {

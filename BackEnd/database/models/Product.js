@@ -23,7 +23,25 @@ const ProductSchema = new mongoose.Schema(
         }
       }
     ],
+    category:{
+      type:String,
+      required:true
+    },
+    gender:[
+      {
+        type:String,
+        required:true
+      }
+    ],
+    category:{
+      type:String,
+      required:true
+    },
     isIconic: {
+      type: Boolean,
+      default: false
+    },
+    isSports: {
       type: Boolean,
       default: false
     }

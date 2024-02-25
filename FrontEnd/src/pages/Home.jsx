@@ -10,7 +10,7 @@ import { fetchAllProducts, fetchIconicProductAndFeatured } from "../redux/featur
 import { useDispatch, useSelector } from "react-redux";
 
 function Home() {
-  const { featured, iconicProducts, featuredAndIconicStatus } = useSelector((state) => state.product);
+  const { featured, iconicProducts, featuredAndIconicStatus,allProducts } = useSelector((state) => state.product);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -20,7 +20,7 @@ function Home() {
 
   return (<>
     {featuredAndIconicStatus !== "loading" && <div>
-      <Hero />
+      <Hero products={allProducts} />
       {/* <OfferBanner /> */}
       {featured?.length > 0 && <Featured items={featured} />}
       {iconicProducts?.length > 0 && <ProductSlider />}

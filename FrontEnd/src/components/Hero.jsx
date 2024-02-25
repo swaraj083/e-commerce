@@ -12,10 +12,8 @@ const Box = ({top,left,product}) => {
   )
 }
 
-const Hero = () => {
-  const {allProducts} = useSelector(state => state.product)
+const Hero = ({products}) => {
   const positions = [[5,0],[12,52],[70,8],[0,78],[74,50],[42,28],[54,84]]
-  const hero = useRef(null);
 
 
   const mouseMoveHandler = (e) =>{
@@ -45,10 +43,10 @@ const Hero = () => {
       <h1 className="text-blue-200 textShadow">Nike</h1>
       <h1 className="text-blue-200 textShadow text-center text-6xl md:hidden">Just Like It</h1>
     <section id="hero" className="absolute w-full h-full flex flex-col flex-wrap justify-center items-center gap-2 text-xl">
-      { allProducts.length>0 &&
+      { products.length>0 &&
         positions.map((pos,idx)=>{
           return (
-            <Box key={idx} top={pos[0]} left={pos[1]} product={allProducts[Math.floor(Math.random(1)*10)]} />
+            <Box key={idx} top={pos[0]} left={pos[1]} product={products[idx]} />
           )
         })
       }
