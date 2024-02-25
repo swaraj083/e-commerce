@@ -255,21 +255,13 @@ router.put("/update-product/:id",isAdmin,upload.single("thumbnail"),async(req,re
         if(thumbnail!==""){
             data.thumbnail = thumbnail;
         }
-        console.log(data)
-        // let data = {name:JSON.parse(name),category:JSON.parse(category),gender:JSON.parse(gender),sizes:newSizes,isIconic:JSON.parse(isIconic),isSports:JSON.parse(isSports)}
+        
         let product = await Product.findByIdAndUpdate(id,data);
         
-        // parsedAddedSizes = JSON.parse(addedSizes);
-
-        // if(parsedAddedSizes){
-        //     for(let i=0;i<parsedAddedSizes.length;i++){
-        //         product.sizes.push(parsedAddedSizes[i]);
-        //     }
-        // }
-        
         await product.save()
+
+        res.status(200).json({success:true})
     }catch (e) {
-        console.log(e.message)
         return res.status(500).json({ success: false, message: e.message });
     }
 })
