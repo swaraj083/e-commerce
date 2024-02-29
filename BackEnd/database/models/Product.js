@@ -33,10 +33,6 @@ const ProductSchema = new mongoose.Schema(
         required:true
       }
     ],
-    category:{
-      type:String,
-      required:true
-    },
     isIconic: {
       type: Boolean,
       default: false

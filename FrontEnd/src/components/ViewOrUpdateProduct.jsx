@@ -2,73 +2,13 @@ import React, { useState, useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { updateProduct } from "../redux/features/product/productSlice";
+import ProductSize from "./ProductSize";
 
-// const ProductSize = () =>{
-//   return (
-//       <div className="col-span-3">
-//             <div className="col-span-1 grid grid-cols-4">
-//                 <h1 className="col-span-1 text-lg font-medium">Size</h1>
-//                 <h1 className="col-span-1 text-lg font-medium">Quantity</h1>
-//                 <h1 className="col-span-1 text-lg font-medium">Price (in INR)</h1>
-//             </div>
-            
-//             {
-//                 productDetails?.sizes.map((size)=>{
-//                     return (
-//                         <div className="col-span-1 grid grid-cols-4 py-2 border-b-2 border-slate-300">
-//                             <h1 className="col-span-1 text-lg font-medium">{size.size}</h1>
-//                             <input type="number" value={size.quantity} className="col-span-1 text-lg font-medium" onChange={(e)=>{}}/>
-//                             <input type="number" value={size.price} className="col-span-1 text-lg font-medium" />
-//                             <span className="col-span-1" onClick={()=>{
-//                                 let sizes = productDetails.sizes.filter((element)=>{return element.size!==size.size})
-//                                 setProductDetails({...productDetails,sizes});
-//                             }}>
-//                             <svg xmlns="http://www.w3.org/2000/svg" height="16" width="14" viewBox="0 0 448 512"><path d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z" /></svg>
-//                             </span>
-//                         </div>
-//                     )
-//                 })
-//             }
-
-//             {
-//                 addedSizes.map((size)=>{
-//                     return (
-//                         <div className="col-span-1 grid grid-cols-4 py-2 border-b-2 border-slate-300">
-//                             <h1 className="col-span-1 text-lg font-medium">{size.size}</h1>
-//                             <input type="number" value={size.quantity} className="col-span-1 text-lg font-medium" />
-//                             <input type="number" value={size.price} className="col-span-1 text-lg font-medium" />
-//                             <span className="col-span-1" onClick={()=>{
-//                                 let sizes = addedSizes.filter((element)=>{return element.size!==size.size})
-//                                 setAddedSizes(sizes);
-//                             }}>
-//                             <svg xmlns="http://www.w3.org/2000/svg" height="16" width="14" viewBox="0 0 448 512"><path d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z" /></svg>
-//                             </span>
-//                         </div>
-//                     )
-//                 })
-//             }
-//         </div>
-        
-//         <div className="col-span-3 grid grid-cols-4 gap-4 pb-2 border-b-2 border-slate-200">
-//             <input type="text" name="size" value={newSize.size} placeholder="Enter Size" className="col-span-1 text-lg font-medium" onChange={newSizeChangeHandler} />
-//             <input type="number" name="quantity" value={newSize.quantity} className="col-span-1 text-lg font-medium" onChange={newSizeChangeHandler} />
-//             <input type="number" name="price" value={newSize.price} className="col-span-1 text-lg font-medium" onChange={newSizeChangeHandler} />
-//             <span className="col-span-1 bg-blue-400 text-white text-medium rounded-lg" onClick={()=>{
-//                 let sizes = addedSizes;
-//                 addedSizes.push(newSize);
-//                 setAddedSizes(sizes);
-//                 setNewSize({size:"",quantity:0,price:0});
-//             }}>Add Size</span>
-//         </div>
-//   )
-// }
 
 const ViewOrUpdateProduct = () => {
   const {id} = useParams();
   let [idx,setIdx] = useState(null);
-  const [productDetails, setProductDetails] = useState(null);
-  const [addedSizes,setAddedSizes] = useState([]);
-  const [newSize,setNewSize] = useState({_id:null,size:"",quantity:0,price:0});
+  const [productDetails, setProductDetails] = useState(undefined);
   const [thumbnailInstance,setThumbnailInstance] = useState(null);
   const [thumbnail,setThumbnail] = useState(null);
   const [gender,setGender] = useState("")  
@@ -104,8 +44,8 @@ const ViewOrUpdateProduct = () => {
     setProductDetails({...productDetails,[e.target.name]:e.target.value})
   }
 
-  const newSizeChangeHandler = (e) => {
-    setNewSize({...newSize,[e.target.name]:e.target.value});
+  const sizeModifier = (updatedSize) => {
+    setProductDetails({...productDetails,sizes:updatedSize})
   }
 
   const submitHandler = (e) => {
@@ -113,8 +53,6 @@ const ViewOrUpdateProduct = () => {
 
     // FormData
     const formData = new FormData();
-
-    console.log(productDetails.isIconic)
 
     if(productDetails.name!==allProducts[idx].name){
       formData.append("name", productDetails.name);
@@ -128,13 +66,7 @@ const ViewOrUpdateProduct = () => {
       formData.append("category", productDetails.category);
     }
 
-    if(productDetails.sizes!==allProducts[idx].sizes){
-      formData.append("sizes", JSON.stringify(productDetails.sizes));
-    }
-
-    if(addedSizes.length>0){
-      formData.append("addedSizes", JSON.stringify(addedSizes));
-    }
+    formData.append("sizes", JSON.stringify(productDetails.sizes));
 
     if(productDetails.isIconic!==String(allProducts[idx].isIconic)){
       formData.append("isIconic", productDetails.isIconic);
@@ -216,6 +148,8 @@ const ViewOrUpdateProduct = () => {
             </select>
           </div>
         </div>
+
+        <ProductSize sizes={productDetails?.sizes} setSizes={sizeModifier} />
 
         <div className="col-span-3">
         <input

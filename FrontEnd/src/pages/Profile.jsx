@@ -45,7 +45,7 @@ const Profile = () => {
                         required
                         value={userDetails.firstName}
                         onChange={changeHandler}
-                        className="col-span-1 text-center text-coral-red placeholder-coral-red py-1 border-2 border-coral-red"
+                        className="col-span-1 text-center text-black placeholder-black py-1 border-2 border-coral-red"
                         />
                     <input
                         type="text"
@@ -54,7 +54,7 @@ const Profile = () => {
                         required
                         value={userDetails.lastName}
                         onChange={changeHandler}
-                        className="col-span-1 text-center text-coral-red placeholder-coral-red py-1 border-2 border-coral-red"
+                        className="col-span-1 text-center text-black placeholder-black py-1 border-2 border-coral-red"
                         />
                 </div>
                 <input
@@ -64,7 +64,7 @@ const Profile = () => {
                     required
                     value={userDetails.email}
                     onChange={changeHandler}
-                    className="col-span-2 text-center text-coral-red placeholder-coral-red py-1 border-2 border-coral-red"
+                    className="col-span-2 text-center text-black placeholder-black py-1 border-2 border-coral-red"
                 />
                 <input
                     type="text"
@@ -73,7 +73,7 @@ const Profile = () => {
                     required
                     value={userDetails.mobile}
                     onChange={changeHandler}
-                    className="col-span-2 text-center text-coral-red placeholder-coral-red py-1 border-2 border-coral-red"
+                    className="col-span-2 text-center text-black placeholder-black py-1 border-2 border-coral-red"
                 />
                 
                 <input
@@ -83,7 +83,7 @@ const Profile = () => {
                     required
                     value={userDetails.address}
                     onChange={changeHandler}
-                    className="col-span-1 text-center text-coral-red placeholder-coral-red py-1 border-2 border-coral-red"
+                    className="col-span-1 text-center text-black placeholder-black py-1 border-2 border-coral-red"
                 />
                 <input
                     type="text"
@@ -92,7 +92,7 @@ const Profile = () => {
                     required
                     value={userDetails.landmark}
                     onChange={changeHandler}
-                    className="col-span-1 text-center text-coral-red placeholder-coral-red py-1 border-2 border-coral-red"
+                    className="col-span-1 text-center text-black placeholder-black py-1 border-2 border-coral-red"
                 />
                 <input
                     type="text"
@@ -101,7 +101,7 @@ const Profile = () => {
                     required
                     value={userDetails.city}
                     onChange={changeHandler}
-                    className="col-span-1 text-center text-coral-red placeholder-coral-red py-1 border-2 border-coral-red"
+                    className="col-span-1 text-center text-black placeholder-black py-1 border-2 border-coral-red"
                 />
                 <input
                     type="text"
@@ -110,7 +110,7 @@ const Profile = () => {
                     required
                     value={userDetails.state}
                     onChange={changeHandler}
-                    className="col-span-1 text-center text-coral-red placeholder-coral-red py-1 border-2 border-coral-red"
+                    className="col-span-1 text-center text-black placeholder-black py-1 border-2 border-coral-red"
                 />
                 <input
                     type="text"
@@ -119,7 +119,7 @@ const Profile = () => {
                     required
                     value={userDetails.country}
                     onChange={changeHandler}
-                    className="col-span-1 text-center text-coral-red placeholder-coral-red py-1 border-2 border-coral-red"
+                    className="col-span-1 text-center text-black placeholder-black py-1 border-2 border-coral-red"
                 />
                 <input
                     type="text"
@@ -128,7 +128,7 @@ const Profile = () => {
                     required
                     value={userDetails.pincode}
                     onChange={changeHandler}
-                    className="col-span-1 text-center text-coral-red placeholder-coral-red py-1 border-2 border-coral-red"
+                    className="col-span-1 text-center text-black placeholder-black py-1 border-2 border-coral-red"
                 />
                 <input
                     type="submit"
