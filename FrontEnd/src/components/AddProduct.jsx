@@ -1,12 +1,14 @@
 import React, { useState, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { addProduct } from "../redux/features/product/productSlice";
+import ProductSize from "./ProductSize";
+import { clothSizes, shoesSizes } from "../constants";
 
 function AddProduct() {
   // State Variables
   const [productDetails, setProductDetails] = useState({ name: "", category: "T-Shirts",gender:[], isIconic: "false",isSports:"false" });
   const [individualSize, setIndividualSize] = useState({ size: "", quantity: 0, price: 0 });
-  const [sizes, setSizes] = useState([]);
+  const [sizes, setSizes] = useState(clothSizes);
   const [thumbnail, setThumbnail] = useState(null);
   const [thumbnailPreview, setThumbnailPreview] = useState("");
   // let gender = []
@@ -23,6 +25,12 @@ function AddProduct() {
   // Change Handlers
   const changeHandler = (e) => {
     setProductDetails({ ...productDetails, [e.target.name]: e.target.value });
+
+    if(e.target.name === "category"){
+      const size = e.target.value==="Shoes"?shoesSizes:clothSizes
+      console.log(e.target.name,size)
+      setSizes(size)
+    }
   }
 
   const sizeChangeHandler = (e) => {
@@ -131,9 +139,9 @@ function AddProduct() {
           </div>
 
           <div className="col-span-1 flex flex-row items-center gap-2">
-            <label htmlFor="category" className="w-fit px-2 text-slate-gray text-lg font-medium font-monserrat">Select Sub-Category</label>
+            <label htmlFor="category" className="w-fit px-2 text-slate-gray text-lg font-medium font-monserrat">Select Category</label>
             <select
-              name="subCategory"
+              name="category"
               className="w-fit p-2 border border-gray-300 rounded-lg"
               onChange={changeHandler}
               required
@@ -177,7 +185,7 @@ function AddProduct() {
         </div>
 
         <div className="my-4">
-          <h1 className="text-slate-gray text-xl font-medium font-monserrat">Sizes</h1>
+          {/* <h1 className="text-slate-gray text-xl font-medium font-monserrat">Sizes</h1>
           <div className="flex flex-row gap-1 wrap">
             {
               sizes.map((size) => {
@@ -188,42 +196,10 @@ function AddProduct() {
                 </div>
               })
             }
-          </div>
+          </div> */}
 
-          <div className="flex flex-row items-center gap-10">
-            <input
-              type="text"
-              name="size"
-              placeholder="Size"
-              value={individualSize.size}
-              onChange={sizeChangeHandler}
-              className="w-1/4 p-2 border border-gray-300 rounded-lg"
-            />
+          <ProductSize sizes={sizes} setSizes={setSizes} />
 
-            <div className="flex flex-row items-center gap-2">
-              <label htmlFor="quantity" className="w-fit px-2 text-slate-gray text-lg font-medium font-monserrat">Quantity</label>
-              <input
-                type="number"
-                placeholder="Quantity"
-                name="quantity"
-                value={individualSize.quantity}
-                className="w-fit p-2 border border-gray-300 rounded-lg"
-                onChange={sizeChangeHandler}
-              />
-            </div>
-
-            <div className="flex flex-row items-center gap-2">
-              <label htmlFor="price" className="w-fit px-2 text-slate-gray text-lg font-medium font-monserrat">Price</label>
-              <input
-                type="number"
-                name="price"
-                value={individualSize.price}
-                placeholder="Price"
-                className="w-fit p-2 border border-gray-300 rounded-lg"
-                onChange={sizeChangeHandler}
-              />
-            </div>
-          </div>
           <button onClick={clickHandler} className="mx-2 my-2 py-2 px-4 bg-coral-red text-white hover:bg-slate-gray rounded-lg">Add Size</button>
         </div>
 

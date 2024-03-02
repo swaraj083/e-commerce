@@ -226,7 +226,7 @@ router.post("/addproduct", isAdmin, upload.single("thumbnail"), async (req, res)
 router.put("/update-product/:id",isAdmin,upload.single("thumbnail"),async(req,res)=>{
     try{
         const id = req.params.id;
-        const { name, category, gender, sizes, isIconic,isSports, addedSizes } = req.body;
+        const { name, category, gender, sizes, isIconic,isSports } = req.body;
         const thumbnail = req.file?.filename || "";
         
         const data = {};
@@ -240,12 +240,7 @@ router.put("/update-product/:id",isAdmin,upload.single("thumbnail"),async(req,re
         if(gender){
             data.gender = JSON.parse(gender);
         }
-        if(sizes || addedSizes){
-            const parsedSizes = sizes?JSON.parse(sizes):undefined;
-            if(parsedSizes){
-                data.sizes = parsedSizes;
-            }
-        }
+
         if(isIconic!==undefined){
             data.isIconic = isIconic;
         }
@@ -258,6 +253,19 @@ router.put("/update-product/:id",isAdmin,upload.single("thumbnail"),async(req,re
         
         let product = await Product.findByIdAndUpdate(id,data);
         
+        const parsedSizes = JSON.parse(sizes)
+        for(let i=0;i<product.sizes.length;i++){
+            if(product.sizes[i].size === parsedSizes[i].size){
+                if(product.sizes[i].quantity !== parsedSizes[i].quantity){
+                    product.sizes[i].quantity = parsedSizes[i].quantity
+                }
+
+                if(product.sizes[i].price !== parsedSizes[i].price){
+                    product.sizes[i].price = parsedSizes[i].price;
+                }
+            }
+        }
+
         await product.save()
 
         res.status(200).json({success:true})

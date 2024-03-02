@@ -1,0 +1,3 @@
+export const clothSizes = [{size:"S",quantity:0,price:0},{size:"M",quantity:0,price:0},{size:"L",quantity:0,price:0},{size:"XL",quantity:0,price:0},{size:"XXL",quantity:0,price:0}];
+
+export const shoesSizes = [{size:"5",quantity:0,price:0},{size:"6",quantity:0,price:0},{size:"7",quantity:0,price:0},{size:"8",quantity:0,price:0},{size:"9",quantity:0,price:0},{size:"10",quantity:0,price:0},{size:"11",quantity:0,price:0},{size:"12",quantity:0,price:0}];
