@@ -10,6 +10,7 @@ const dotenv = require("dotenv");
 // DATABASE MODEL IMPORT //
 ///////////////////////////
 const User = require("../database/models/User");
+const fetchuser = require("../middlewares/fetchuser");
 
 
 
@@ -159,8 +160,79 @@ router.post("/login", async (req, res) => {
   }
 });
 
-router.get("/", (req, res) => {
-  return res.send("Login");
-});
+////////////////////
+// REQUEST -> PUT //
+////////////////////
+
+/**
+ * @author Omkar Mahangare
+ * @desc Update User details
+ * @route POST users/updateuser
+ * @access Public
+ */
+router.put("/updateuser/",fetchuser,async(req,res)=>{
+  try {
+    const id = req.user.id;
+    const {firstName, lastName, email, mobile, address, landmark, city, state, country, pincode} = req.body;
+
+    const data = {};
+
+    if(firstName!==undefined){
+      data.firstName = firstName;
+    }
+    if(lastName!==undefined){
+      data.lastName = lastName;
+    }
+    if(email!==undefined){
+      data.email = email;
+    }
+    if(mobile!==undefined){
+      data.mobile = mobile;
+    }
+    if(address!==undefined){
+      data.address = address;
+    }
+    if(landmark!==undefined){
+      data.landmark = landmark;
+    }
+    if(city!==undefined){
+      data.city = city;
+    }
+    if(state!==undefined){
+      data.state = state;
+    }
+    if(country!==undefined){
+      data.country = country;
+    }
+    if(pincode!==undefined){
+      data.pincode = pincode;
+    }
+
+    let user = await User.findByIdAndUpdate(id,data);
+
+    await user.save();
+
+    res.json({success:true})
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ success: false, error: "Internal Server Error" });
+  }
+})
+
+/**
+ * @author Omkar Mahangare
+ * @desc Change Password of the User
+ * @route POST users/changepassword
+ * @access Public
+ */
+
+
+/**
+ * @author Omkar Mahangare
+ * @desc Change Password of the User when user forgotpassword
+ * @route POST users/forgotpassword
+ * @access Public
+ */
 
 module.exports = router;

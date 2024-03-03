@@ -14,7 +14,7 @@ const ViewOrUpdateProduct = () => {
   const [gender,setGender] = useState("")  
   const {allProducts} = useSelector(state=>state.product)
   const dispatch = useDispatch();
-  const host="http://localhost:5000/uploads/";
+  const host = process.env.SERVER_URL+"/uploads/";
   const thumbnailRef = useRef(null);
   const iconicRef = useRef(null);
   const sportsRef = useRef(null);

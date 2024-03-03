@@ -12,7 +12,7 @@ const ViewOrUpdateFeatured = () => {
     const dispatch = useDispatch();
     const {currentFeatured,loading} = useSelector((state)=>state.product)
     const thumbnailInput = useRef(null);
-    const host="http://localhost:5000/uploads/";
+    const host = process.env.SERVER_URL+"/uploads/";
 
     const imgChangeHandler = (e) => {
         setThumbnail(e.target.files[0]);
