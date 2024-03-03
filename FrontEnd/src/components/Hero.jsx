@@ -2,7 +2,7 @@ import React, { useRef } from "react";
 import { useSelector } from "react-redux";
 
 
-const host = "http://localhost:5000/uploads/"
+const host = process.env.SERVER_URL+"/uploads/";
 
 const Box = ({top,left,product}) => {
   return (

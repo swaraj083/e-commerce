@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-const host = "http://localhost:5000";
+const host = process.env.SERVER_URL;
 
 // export const fetchProductsByCategory = createAsyncThunk(
 //   "product/fetchProductsByCategory",

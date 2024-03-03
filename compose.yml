@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  web:
+    depends_on:
+      - api
+
+    build: ./FrontEnd
+
+    ports:
+      - 5173:5173
+    
+    environment:
+      - API_URL: http://localhost:8000
+
+    develop:
+      watch:
+        - path: ./FrontEnd/package.json
+          action: rebuild
+        - path: ./FrontEnd/package-lock.json
+          action: rebuild
+        - path: ./FrontEnd
+          target: /app
+          action: sync
+  
+  api:
+    build: ./BackEnd
+
+    ports:
+      - "8000:8000"
+    
+    env_file:
+      - ./BackEnd/.env
+
+    volumes:
+      - nike: ./app/uploads
+    
+    develop:
+      watch:
+        - path: ./BackEnd/package.json
+          action: rebuild
+        - path: ./BackEnd/package-lock.json
+          action: rebuild
+        - path: ./BackEnd
+          target: /app
+          action: sync
+
+volumes:
+  nike:

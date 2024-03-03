@@ -6,7 +6,7 @@ import { addToCart } from "../redux/features/cart/cartSlice";
 import { Alert } from "../components";
 
 export default function Product() {
-    const host = "http://localhost:5000";
+    const host = process.env.SERVER_URL;
     const [sizeDetails, setSizeDetails] = useState({ size: "", quantity: "", price: "" });
     const [alertMessage, setAlertMessage] = useState({type:null,message:""});
     const { productID } = useParams();

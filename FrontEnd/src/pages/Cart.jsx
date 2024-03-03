@@ -5,7 +5,7 @@ import { removeFromCart, resetCart, updateQuantity } from "../redux/features/car
 
 const ProductRow = ({ productID, productName, quantity, amount, size, productThumbnail }) => {
     const dispatch = useDispatch();
-    const host = "http://localhost:5000";
+    const host = process.env.SERVER_URL;
 
     const quantityUpdater = (e) => {
         if (e.target.value < 0) {

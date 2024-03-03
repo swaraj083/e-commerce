@@ -13,7 +13,7 @@ const avgPrice = (productSizeList) => {
 
 export default function DisplayProducts({products}){
     console.log(products)
-    const host = "http://localhost:5000";
+    const host = process.env.SERVER_URL;
     return <div className="grid grid-cols-4 gap-4 w-full justify-center items-center">
         {products?.map((product)=>{
             return (

@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-const host = "http://localhost:5000";
+const host = process.env.SERVER_URL;
 
 const AUTHTOKEN = localStorage.getItem("authtoken") !== null ? localStorage.getItem("authtoken") : null;
 const USERINFO = JSON.parse(localStorage.getItem("userInfo")) || null;

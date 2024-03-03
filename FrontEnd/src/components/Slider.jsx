@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 
 function Slider({sliderProducts}) {
-  const host="http://localhost:5000/uploads/";
+  const host=process.env.SERVER_URL+"/uploads/";;
   const [curLastIndex, setCurLastIndex] = useState(3);
   const len = sliderProducts.length;
 

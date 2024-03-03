@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 function Featured({ items }) {
-  const host="http://localhost:5000/uploads/";
+  const host=process.env.SERVER_URL+"/uploads/";;
   return (
     <section className="px-8 py-4 bg-blue-400">
       <h1 className="text-white mb-8 text-6xl text-center font-montserrat font-bold textShadow max-sm:text-4xl">
