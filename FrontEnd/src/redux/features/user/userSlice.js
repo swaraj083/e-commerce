@@ -49,6 +49,23 @@ export const loginUser = createAsyncThunk(
   },
 );
 
+export const updateUser = createAsyncThunk("users/updateUser",async({id,userDetails})=>{
+  try {
+   const response = await fetch(`${host}/users/update-user/${id}`,{
+    method:"PUT",
+    headers:{
+      "Content-Type":"application/json",
+      "authtoken": localStorage.getItem("authtoken")
+    },
+      body:JSON.stringify(userDetails)
+   });
+   const data = await response.json();
+   return data;
+  } catch (e) {
+    return e.message;
+  }
+})
+
 export const userSlice = createSlice({
   name: "user",
   initialState,
@@ -117,6 +134,25 @@ export const userSlice = createSlice({
         }
       })
       .addCase(loginUser.rejected, (state, action) => {
+        state.status = "rejected";
+        state.errorMessage = action.errorMessage.message;
+      })
+      .addCase(updateUser.pending, (state) => {
+        state.status = "pending";
+      })
+      .addCase(updateUser.fulfilled, (state, action) => {
+        if (action.payload.success) {
+          state.status = "fulfilled";
+          state.userInfo = action.payload.userInfo;
+          state.errorMessage = null;
+          state.isLoggedIn = true;
+          localStorage.setItem("userInfo", JSON.stringify(action.payload.userInfo));
+        } else {
+          state.status = "rejected";
+          state.errorMessage = action.payload.msg;
+        }
+      })
+      .addCase(updateUser.rejected, (state, action) => {
         state.status = "rejected";
         state.errorMessage = action.errorMessage.message;
       });

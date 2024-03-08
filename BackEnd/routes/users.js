@@ -170,11 +170,10 @@ router.post("/login", async (req, res) => {
  * @route POST users/updateuser
  * @access Public
  */
-router.put("/updateuser/",fetchuser,async(req,res)=>{
+router.put("/update-user/:id",fetchuser,async(req,res)=>{
   try {
     const id = req.user.id;
     const {firstName, lastName, email, mobile, address, landmark, city, state, country, pincode} = req.body;
-
     const data = {};
 
     if(firstName!==undefined){
@@ -208,11 +207,28 @@ router.put("/updateuser/",fetchuser,async(req,res)=>{
       data.pincode = pincode;
     }
 
+
     let user = await User.findByIdAndUpdate(id,data);
 
     await user.save();
 
-    res.json({success:true})
+    const userInfo = {
+      id:user.id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      mobile: user.mobile,
+      address: user.address,
+      landmark: user.landmark,
+      city: user.city,
+      state: user.state,
+      country: user.country,
+      pincode: user.pincode,
+      isAdmin: user.isAdmin,
+      previousTransaction: user.previousTransactions
+    }
+
+    res.json({success:true,userInfo})
   } catch (error) {
     return res
       .status(500)
