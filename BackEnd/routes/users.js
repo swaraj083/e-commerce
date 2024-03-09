@@ -11,6 +11,7 @@ const dotenv = require("dotenv");
 ///////////////////////////
 const User = require("../database/models/User");
 const fetchuser = require("../middlewares/fetchuser");
+const isAdmin = require("../middlewares/isAdmin");
 
 
 
@@ -22,6 +23,70 @@ dotenv.config();
 ////////////
 
 const router = express.Router();
+
+////////////////////
+// REQUEST -> GET //
+////////////////////
+
+/**
+ * @author Omkar Mahangare
+ * @desc Get All Users
+ * @route GET users/get-users
+ * @access Private
+ */
+router.get("/get-users",isAdmin,async(req,res)=>{
+  try {
+    const allUsers = await User.find();
+    
+    let users = [];
+
+    for(let i=0;i<allUsers.length;i++){
+      const {id,firstName,lastName,email,isAdmin} = allUsers[i];
+
+      users.push({id,firstName,lastName,email,isAdmin})
+    }
+
+    res.status(200).json({success:true,users})
+  } catch (e) {
+    return res.status(500).json({ success:false, message: e.message });
+  }
+})
+
+/**
+ * @desc Reset Password Link
+ * @route GET users/reset-password-link
+ * @access Public
+ */
+router.get("/reset-password-link/",async(req,res)=>{
+  try {
+      // Request Body Contents
+      const {email} = req.body;
+
+      // Find the User to check whether user exists
+      const user = await User.findOne({email});
+
+      if(!user){
+          return res.json({success:false,msg:"User Does not Exists"});
+      }
+
+      // Create a reset Link
+      const resetlink = await ResetPasswordLink.create({
+          userID:user.id,
+      });
+
+      await resetlink.save();
+
+      // Send a mail to user
+      await sendLink(email,resetlink.id);
+      
+      // Send the response
+      res.status(200).json({success:true})
+  } catch (error) {
+      return res
+      .status(500)
+      .json({ success: false, error: "Internal Server Error" });
+  }
+})
 
 /////////////////////
 // REQUEST -> POST //
@@ -237,18 +302,44 @@ router.put("/update-user/:id",fetchuser,async(req,res)=>{
 })
 
 /**
- * @author Omkar Mahangare
- * @desc Change Password of the User
- * @route POST users/changepassword
- * @access Public
- */
+* @desc Reset Password
+* @route PUT users/reset-password/:id
+* @access Public
+*/
+router.put("/reset-password/:id",async(req,res)=>{
+  try {
+      // Get ResetPasswordLink's id
+      const {id} = req.params;
 
+      // Request Body contents
+      const {password} = req.body;
 
-/**
- * @author Omkar Mahangare
- * @desc Change Password of the User when user forgotpassword
- * @route POST users/forgotpassword
- * @access Public
- */
+      // Check whether the link is valid
+      const resetlink = await ResetPasswordLink.findById(id);
+
+      if(!resetlink){
+          return res.json({success:false,msg:"Link is not valid"});
+      }
+
+      // Hash the Password
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash(password, salt);
+
+      // Update User
+      let user = await User.findByIdAndUpdate(resetlink.userID,hashedPassword);
+      user.save();
+
+      // Delete the resetlink record from database
+      await ResetPasswordLink.findByIdAndDelete(id);
+
+      // Response
+      res.status(200).json({success:true});
+  } catch (error) {
+      return res
+      .status(500)
+      .json({ success: false, error: "Internal Server Error" });
+  }
+})
+
 
 module.exports = router;
