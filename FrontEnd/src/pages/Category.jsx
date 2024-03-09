@@ -150,7 +150,7 @@ const Category = ({categoryName}) => {
         <p>Home &#183; {categoryName}</p>
         <h1 className="my-4 text-4xl">{categoryName}</h1>
       </div>
-      <div className="relative my-4 flex flex-row justify-center items-center gap-4 border-y-2 border-blue-200">
+      <div className="relative my-4 flex flex-row justify-center items-center gap-4 border-y-2 border-blue-200 max-sm:flex-wrap max-sm:gap-2">
         {
           filter.map((element)=>{
             return(

@@ -28,11 +28,11 @@ const Users = () => {
             allUsers?.map((user,idx)=>{
                 return (
                     <div className="my-4 text-center">
-                <div className="grid grid-cols-12 text-lg font-medium">
+                <div className="grid grid-cols-12 text-lg font-medium hover:bg-slate-200 py-2 px-2 rounded-xl items-center">
                     <div className="col-span-1"><p>{idx+1}</p></div>
                     <div className="col-span-5"><p>{user.firstName+" "+user.lastName}</p></div>
                     <div className="col-span-5"><p>{user.email}</p></div>
-                    <div className="col-span-1"><p>{user.isAdmin.toString()}</p></div>
+                    <div className="col-span-1"><p className={`py-1 px-3 ${user.isAdmin?"bg-blue-400":"bg-green-400"} rounded-full`}>{user.isAdmin?"True":"False"}</p></div>
                 </div>
             </div>
                 )

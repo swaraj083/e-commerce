@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { signUpUser, setErrorMessage } from "../redux/features/user/userSlice";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const SignUp = () => {
     const [signUpDetails, setSignUpDetails] = useState({ firstName: "", lastName: "", mobile: "", email: "", password: "", confirmPassword: "", address: "", landmark: "", city: "", state: "", country: "", pincode: "" });
@@ -33,10 +33,10 @@ const SignUp = () => {
             {status === 'rejected' && <div>
                 {errorMessage}
             </div>}
-            <h1 className="text-6xl text-black font-bold font-[monospace]">Create a new Account</h1>
+            <h1 className="text-6xl text-black font-bold font-[monospace] max-sm:text-4xl">Create a new Account</h1>
             <form
                 onSubmit={submitHandler}
-                className="w-1/2 grid grid-cols-2 mt-4 self-center gap-4 boxShadow-lg"
+                className="w-1/2 grid grid-cols-2 mt-4 self-center gap-4 boxShadow-lg max-sm:w-full"
             >
                 <h1 className="col-span-2 text-center text-2xl text-black font-bold font-[monospace] pb-2 border-b-2 border-black">Sign Up</h1>
                 <div className="col-span-2 grid grid-cols-2 items-center gap-2">
@@ -149,6 +149,7 @@ const SignUp = () => {
                     onChange={changeHandler}
                     className="col-span-1 text-center text-coral-red placeholder-coral-red py-1 border-2 border-coral-red"
                 />
+                <Link to="/login" className="col-span-2 hover:text-blue-400 font-monospace" >Already have an Account</Link>
                 <input
                     type="submit"
                     value="SignUp"

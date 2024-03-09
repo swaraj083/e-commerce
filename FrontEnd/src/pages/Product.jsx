@@ -41,10 +41,10 @@ export default function Product() {
         }
         {
             (!loading && product) && <div className="grid grid-cols-2 gap-2 px-8 py-4">
-                <div className="col-span-1">
+                <div className="col-span-1 max-sm:col-span-2">
                     <img src={host + "/uploads/" + product.thumbnail} className="w-full h-auto" />
                 </div>
-                <div className="col-span-1 flex flex-col justify-center gap-2 px-4">
+                <div className="col-span-1 flex flex-col justify-center gap-2 px-4 max-sm:col-span-2">
                     <h1 className="text-4xl text-black font-bold font-monserrat textShadow">{product.name}</h1>
                     <div className="flex flex-row gap-2 ">
                         {

@@ -10,6 +10,8 @@ const dotenv = require("dotenv");
 // DATABASE MODEL IMPORT //
 ///////////////////////////
 const User = require("../database/models/User");
+const ResetPasswordLink = require("../database/models/ResetPasswordLink");
+
 const fetchuser = require("../middlewares/fetchuser");
 const isAdmin = require("../middlewares/isAdmin");
 
@@ -57,10 +59,10 @@ router.get("/get-users",isAdmin,async(req,res)=>{
  * @route GET users/reset-password-link
  * @access Public
  */
-router.get("/reset-password-link/",async(req,res)=>{
+router.get("/reset-password-link/:email",async(req,res)=>{
   try {
       // Request Body Contents
-      const {email} = req.body;
+      const {email} = req.params;
 
       // Find the User to check whether user exists
       const user = await User.findOne({email});

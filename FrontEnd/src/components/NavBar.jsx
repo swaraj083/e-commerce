@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logOutUser } from "../redux/features/user/userSlice";
 import { resetCart } from "../redux/features/cart/cartSlice";
+import { navElements } from "../constants/NavBarElements";
 
 function NavBar() {
   const [menu, setMenu] = useState(false);
@@ -36,30 +37,18 @@ function NavBar() {
             ></path>
           </svg>
         </Link>
-        <Link
-          to="/kids"
-          className="text-black m-0 text-md font-montserrat font-medium hover:pointer hover:text-blue-400 textShadow montserrat"
-        >
-          Kids
-        </Link>
-        <Link
-          to="/men"
-          className="text-black m-0 text-md font-montserrat font-medium hover:pointer hover:text-blue-400 textShadow montserrat"
-        >
-          Men
-        </Link>
-        <Link
-          to="/women"
-          className="text-black m-0 text-md font-montserrat font-medium hover:pointer hover:text-blue-400 textShadow montserrat"
-        >
-          Women
-        </Link>
-        <Link
-          to="/sports"
-          className="text-black m-0 text-md font-montserrat font-medium hover:pointer hover:text-blue-400 textShadow montserrat"
-        >
-          Sports
-        </Link>
+        {
+          navElements?.map((element)=>{
+            return (
+              <Link
+                to={element.url}
+                className="text-black m-0 text-md font-montserrat font-medium hover:pointer hover:text-blue-400 textShadow montserrat"
+              >
+                {element.title}
+              </Link>
+            )
+          })
+        }
         {
           isLoggedIn && userInfo.isAdmin && <Link
             to="/admin"
@@ -69,24 +58,6 @@ function NavBar() {
           </Link>
 
         }
-        {/* {
-          isLoggedIn && userInfo.isAdmin && <Link
-            to="/admin/add-product"
-            className="text-black m-0 text-md font-montserrat font-medium hover:pointer hover:text-blue-400 textShadow montserrat"
-          >
-            Add Product
-          </Link>
-
-        }
-        {
-          isLoggedIn && userInfo.isAdmin && <Link
-            to="/admin/add-featured"
-            className="text-black m-0 text-md font-montserrat font-medium hover:pointer hover:text-blue-400 textShadow montserrat"
-          >
-            Add Featured
-          </Link>
-
-        } */}
       </div>
       {
         !isLoggedIn && <div className="flex flex-row gap-3 m-0 max-sm:hidden">
@@ -126,7 +97,7 @@ function NavBar() {
           </p>
         </div>
       }
-      <div className="p-4 md:hidden flex flex-row justify-center items-center gap-4">
+      <div className="p-4 md:hidden flex flex-row justify-center items-center gap-4 z-[30]">
         <Link to="">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -153,7 +124,7 @@ function NavBar() {
       </div>
       {
         menu && (
-          <div className="absolute w-screen h-screen top-0 left-0 bg-blue-400 zIndex-10">
+          <div className="fixed w-screen h-screen top-0 left-0 bg-blue-400 z-[30] transition duration-500 ease-in-out">
             <div
               className="text-white-400 m-0 text-2xl font-montserrat font-medium hover:pointer hover:text-black p-8"
               onClick={menuCloseHandler}
@@ -164,49 +135,41 @@ function NavBar() {
               className="flex flex-col gap-3 p-4 m-0 justify-center
             items-center"
             >
-              <Link
-                to=""
-                className="text-white-400 m-0 text-2xl font-montserrat font-medium hover:pointer hover:text-black"
-              >
-                New & Featured
-              </Link>
-              <Link
-                to=""
-                className="text-white-400 m-0 text-2xl font-montserrat font-medium hover:pointer hover:text-black"
-              >
-                Kids
-              </Link>
-              <Link
-                to=""
-                className="text-white-400 m-0 text-2xl font-montserrat font-medium hover:pointer hover:text-black"
-              >
-                Men
-              </Link>
-              <Link
-                to=""
-                className="text-white-400 m-0 text-2xl font-montserrat font-medium hover:pointer hover:text-black"
-              >
-                Women
-              </Link>
-              <Link
-                to=""
-                className="text-white-400 m-0 text-2xl font-montserrat font-medium hover:pointer hover:text-black"
-              >
-                Sports
-              </Link>
+              {
+                navElements?.map((element)=>{
+                  return (
+                    <Link
+                      to={element.url}
+                      className="text-white-400 m-0 text-2xl font-montserrat font-medium hover:pointer hover:text-black"
+                      onClick={()=>{setMenu(false)}}
+                    >
+                      {element.title}
+                    </Link>
+                  )
+                })
+              }
+              
               <hr />
-              <Link
-                to="/signup"
-                className="text-white-400 m-0 text-2xl font-montserrat font-medium hover:pointer hover:text-black"
-              >
-                Sign Up
-              </Link>
-              <Link
-                to="/login"
-                className="text-white-400 m-0 text-2xl font-montserrat font-medium hover:pointer hover:text-black"
-              >
-                Login
-              </Link>
+              {
+                !isLoggedIn &&
+                  <Link
+                    to="/signup"
+                    className="text-white-400 m-0 text-2xl font-montserrat font-medium hover:pointer hover:text-black"
+                    onClick={()=>{setMenu(false)}}  
+                  >
+                    Sign Up
+                  </Link>
+                  
+              }
+              { !isLoggedIn &&
+                  <Link
+                    to="/login"
+                    className="text-white-400 m-0 text-2xl font-montserrat font-medium hover:pointer hover:text-black"
+                    onClick={()=>{setMenu(false)}}  
+                  >
+                    Login
+                  </Link>
+              }
             </div>
           </div>
         )

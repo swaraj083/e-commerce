@@ -14,7 +14,7 @@ const avgPrice = (productSizeList) => {
 export default function DisplayProducts({products}){
     console.log(products)
     const host = process.env.SERVER_URL;
-    return <div className="grid grid-cols-4 gap-4 w-full justify-center items-center">
+    return <div className="grid grid-cols-4 gap-4 w-full justify-center items-center max-sm:grid-cols-1">
         {products?.map((product)=>{
             return (
                 <Link key={product._id} to={`/product/${product._id}`} className="col-span-1 flex flex-col justify-center items-center gap-4 gapy-4 shadow-lg p-4 bg-white-400 rounded-md">
