@@ -10,8 +10,27 @@ const initialState = {
   userInfo: USERINFO,
   isLoggedIn: false,
   errorMessage: null,
+  allUsers: []
 }
 
+
+export const getAllUsers = createAsyncThunk("users/getAllUsers",async()=>{
+  try {
+    const response = await fetch(`${host}/users/get-users`,{
+      method:"GET",
+      headers:{
+        "Content-Type":"application/json",
+        "authtoken" : AUTHTOKEN
+      }
+    })
+
+    const data = await response.json();
+    
+    return data;
+  } catch (e) {
+    return e.message;
+  }
+})
 
 export const signUpUser = createAsyncThunk("URL", async (credentials) => {
   try {
@@ -153,6 +172,22 @@ export const userSlice = createSlice({
         }
       })
       .addCase(updateUser.rejected, (state, action) => {
+        state.status = "rejected";
+        state.errorMessage = action.errorMessage.message;
+      })
+      .addCase(getAllUsers.pending, (state) => {
+        state.status = "pending";
+      })
+      .addCase(getAllUsers.fulfilled, (state, action) => {
+        if (action.payload.success) {
+          state.status = "fulfilled";
+          state.allUsers = action.payload.users;
+        } else {
+          state.status = "rejected";
+          state.errorMessage = action.payload.msg;
+        }
+      })
+      .addCase(getAllUsers.rejected, (state, action) => {
         state.status = "rejected";
         state.errorMessage = action.errorMessage.message;
       });

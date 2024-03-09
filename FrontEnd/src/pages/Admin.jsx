@@ -22,6 +22,10 @@ const navigations = [
     title:"Add Featured",
     url:"add-featured",
   },
+  {
+    title:"Users",
+    url:"users"
+  }
 ]
 
 
@@ -41,7 +45,7 @@ function Admin() {
 
   return (
       <div  className="grid grid-cols-5">
-    <div className="col-span-1 h-screen bg-white md:overflow-hidden overflow-auto md:hover:overflow-auto pb-10 shadow-lg">
+    <div className="col-span-1 h-screen bg-white md:overflow-hidden overflow-auto md:hover:overflow-auto pb-10 shadow-lg max-sm:hidden">
         {
           activeMenu && 
           <>
@@ -62,7 +66,7 @@ function Admin() {
           </>
         }
     </div>
-    <div className="col-span-4 max-sm:col-span-5">
+    <div className="col-span-4 max-sm:col-span-5  max-sm:hidden">
         <nav className="w-full text-slate-gray flex flex-row justify-between items-center bg-white py-2 px-4 shadow-lg md:justify-end">
           <p className="md:hidden">Menu</p>
           <div className="flex justify-center items-center gap-4">
@@ -77,6 +81,10 @@ function Admin() {
         </nav>
         
         <Outlet />
+    </div>
+    <div className="md:hidden w-screen h-screen text-4xl font-bold text-center flex flex-col justify-center items-center">
+        <h1>Only Availble on Desktop</h1>
+        <Link to="/" className="text-2xl hover:text-blue-400">Click to Go to website</Link>
     </div>
     </div>
   );

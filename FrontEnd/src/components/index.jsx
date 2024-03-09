@@ -15,3 +15,6 @@ export { default as StatCard } from "./StatCard";
 export { default as SignUp } from "./SignUp";
 export {default as ViewOrUpdateFeatured} from "./ViewOrUpdateFeatured";
 export {default as ViewOrUpdateProduct} from "./ViewOrUpdateProduct";
+export {default as Users} from "./Users";
+export {default as ForgotPassword} from "./ForgotPassword";
+export {default as ResetPassword} from "./ResetPassword";

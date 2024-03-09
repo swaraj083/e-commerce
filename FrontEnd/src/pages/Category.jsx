@@ -109,7 +109,7 @@ const FilterElements = ({title,options})=>{
   return (
     <div className="relative py-4">
       <button className="py-1 px-3 bg-white text-lg font-medium border-2 border-black rounded-md" onClick={()=>{setDisplay(display=>!display)}}>{title}</button>
-      <div className={`absolute ${!display?"hidden":""} w-40 max-h-60 overflow-y-auto bg-white top-full flex flex-col gap-2 text-lg font-medium p-2 rounded-md shadow-md`}>
+      <div className={`absolute ${!display?"hidden":""} w-40 max-h-60 overflow-y-auto bg-white top-full flex flex-col gap-2 text-lg font-medium p-2 rounded-md shadow-md transition duration-1000`}>
         {
           options.map((option)=>{
             return (
@@ -150,7 +150,7 @@ const Category = ({categoryName}) => {
         <p>Home &#183; {categoryName}</p>
         <h1 className="my-4 text-4xl">{categoryName}</h1>
       </div>
-      <div className="relative my-4 flex flex-row justify-center items-center gap-4 border-y-2 border-blue-200">
+      <div className="relative my-4 flex flex-row justify-center items-center gap-4 border-y-2 border-blue-200 max-sm:flex-wrap max-sm:gap-2">
         {
           filter.map((element)=>{
             return(
