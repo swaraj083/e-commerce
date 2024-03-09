@@ -22,6 +22,10 @@ const navigations = [
     title:"Add Featured",
     url:"add-featured",
   },
+  {
+    title:"Users",
+    url:"users"
+  }
 ]
 
 
