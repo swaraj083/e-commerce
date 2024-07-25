@@ -56,7 +56,7 @@ const ProductRow = ({ productID, productName, quantity, amount, size, productThu
 const ConfirmDetails = ({userInfo,setCheckout})=>{
     console.log(userInfo)
     const { productList, totalAmount } = useSelector((state) => state.cart);
-    const host = "http://localhost:5000"
+    const host = "http://localhost:8000"
 
     const getKey = async()=>{
         try{

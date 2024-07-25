@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logOutUser } from "../redux/features/user/userSlice";
 import { resetCart } from "../redux/features/cart/cartSlice";
-import { navElements } from "../constants/NavBarElements";
+import { navElements } from "../constants";
 
 function NavBar() {
   const [menu, setMenu] = useState(false);
