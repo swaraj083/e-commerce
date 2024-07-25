@@ -1,5 +1,6 @@
 import React, { useRef } from "react";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 
 const host = process.env.SERVER_URL+"/uploads/";
@@ -46,7 +47,9 @@ const Hero = ({products}) => {
       { products.length>0 &&
         positions.map((pos,idx)=>{
           return (
+            <Link to={`/product/${products[idx]._id}`}>
             <Box key={idx} top={pos[0]} left={pos[1]} product={products[idx]} />
+            </Link>
           )
         })
       }

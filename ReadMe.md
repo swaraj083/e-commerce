@@ -41,9 +41,3 @@ Project is Under Development
     cd FrontEnd
     npm run server
     ```
-
-## Features to Add
-- Email Sender to send email when the product quantity reaches below a certain threshold
-- Add login to filter the products
-- Logic to update Quantity and Price of Product Sizes
-- Loading Animation
