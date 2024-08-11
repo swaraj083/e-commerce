@@ -41,8 +41,10 @@ router.get("/getByID/:id",async(req,res)=>{
         const featured = await Featured.findById(id);
         
         if(featured){
-            res.status(200).json({success:true,featured});
+            return res.status(200).json({success:true,featured});
         }
+
+        res.status(404).json({success:false,msg:"Featured Not Found"})
     } catch (e) {
         return res.status(500).json({ success: false, message: e.message });
     }

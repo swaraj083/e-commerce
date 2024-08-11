@@ -39,8 +39,11 @@ const router = express.Router();
 router.get("/get-users",isAdmin,async(req,res)=>{
   try {
     const allUsers = await User.find();
-    
     let users = [];
+
+    if(!allUsers){
+      return res.status(200).json({success:true,users})
+    }
 
     for(let i=0;i<allUsers.length;i++){
       const {id,firstName,lastName,email,isAdmin} = allUsers[i];
@@ -115,7 +118,7 @@ router.post("/createuser", async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, salt);
 
     // Create User
-    const user = new User({
+    const user = await User.create({
       firstName,
       lastName,
       email,

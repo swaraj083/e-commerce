@@ -20,9 +20,10 @@ const isAdmin = async(req, res, next) => {
     }
 
     try {
-        const data = jwt.verify(token, process.env.SECRET_TOKEN)
+        const data = await jwt.verify(token, process.env.SECRET_TOKEN)
         const isAdmin = await User.findById(data.user.id)
-        if (isAdmin) {
+
+        if (isAdmin.isAdmin) {
             req.user = data.user;
             next()
         }
