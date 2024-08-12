@@ -18,6 +18,7 @@ const isAdmin = require("../middlewares/isAdmin");
 // UTILS IMPORT //
 //////////////////
 const upload = require("../utils/multer");
+const { error } = require("console");
 
 ////////////
 // ROUTES //
@@ -64,7 +65,7 @@ router.post("/add", isAdmin, upload.single("thumbnail"), async (req, res) => {
     try {
         // Request Body Contents - Title, Destination Url, Thumbnail
         const { title, destURL } = req.body;
-        const thumbnail = req.file.filename || "";
+        const thumbnail = req.file?.filename || "";
 
         // Create Featured
         const featured = await Featured.create({
@@ -77,6 +78,7 @@ router.post("/add", isAdmin, upload.single("thumbnail"), async (req, res) => {
         // Response
         res.status(200).json({ success: true, featured })
     } catch (e) {
+        console.log(e)
         return res.status(500).json({ success: false, message: e.message });
     }
 })

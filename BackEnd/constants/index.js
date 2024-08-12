@@ -92,4 +92,12 @@ const FeaturedDemo = {
     destURL: "/featured"
 }
 
-module.exports = {DemoUser,DemoAdminUser,AllDemoUsers,FeaturedDemo}
+const DemoFeaturedAdd = {
+    id:1,
+    title: "Featured1",
+    thumbnail: "/featured1.jpg",
+    destURL: "/featured",
+    save: jest.fn().mockResolvedValue(true)
+}
+
+module.exports = {DemoUser,DemoAdminUser,AllDemoUsers,FeaturedDemo,DemoFeaturedAdd}

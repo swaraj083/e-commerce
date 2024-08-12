@@ -21,9 +21,14 @@ const isAdmin = async(req, res, next) => {
 
     try {
         const data = await jwt.verify(token, process.env.SECRET_TOKEN)
+        
+        if(!data){
+            return res.status(401).json({ success:false, error: "Please authenticate using a valid token" })
+        }
+
         const isAdmin = await User.findById(data.user.id)
 
-        if (isAdmin.isAdmin) {
+        if (isAdmin?.isAdmin) {
             req.user = data.user;
             next()
         }
